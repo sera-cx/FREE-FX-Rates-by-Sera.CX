@@ -1,0 +1,14 @@
+{
+  "name": "Sera FX — Free FX Rates API",
+  "short_name": "Sera FX",
+  "description": "Free real-time FX rates API — buy, sell and mid-market quotes across 160+ currencies. No card, no paid tier.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF7EE",
+  "theme_color": "#00D26A",
+  "icons": [
+    { "src": "/favicon-32x32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "/favicon-96x96.png", "sizes": "96x96", "type": "image/png" },
+    { "src": "/apple-icon-180x180.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

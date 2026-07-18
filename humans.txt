@@ -1,0 +1,14 @@
+/* SERA FX */
+
+Free FX rates for everyone. Built and run by Sera — the on-chain FX settlement engine.
+
+Site: https://fx.sera.cx
+API: https://api.sera.cx/v1
+Docs: https://docs.sera.cx
+X: https://x.com/seraprotocol
+Telegram: https://t.me/seraprotocol
+GitHub: https://github.com/seraprotocol
+
+/* TECH */
+Static site on GitHub Pages. IBM Plex Sans/Mono + Instrument Serif.
+No trackers required. Rates for reference, not financial advice.

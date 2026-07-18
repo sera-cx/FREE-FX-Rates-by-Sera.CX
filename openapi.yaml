@@ -1,0 +1,84 @@
+openapi: 3.1.0
+info:
+  title: Sera FX Rates API
+  version: "1.0.0-draft"
+  description: >
+    Free real-time foreign-exchange rates. Buy, sell and mid-market quotes across
+    160+ currencies, updated every 60 seconds, with free historical data.
+    Rates are live prices from Sera's on-chain FX settlement engine.
+
+    DRAFT: this spec reflects the endpoints documented on fx.sera.cx. Reconcile with
+    the live api.sera.cx contract before publishing (endpoints currently return 404).
+  contact:
+    name: Sera
+    url: https://docs.sera.cx
+  license:
+    name: Free for commercial use with attribution
+    url: https://fx.sera.cx/
+servers:
+  - url: https://api.sera.cx/v1
+    description: Production
+paths:
+  /quote:
+    get:
+      operationId: getQuote
+      summary: Live buy / sell / mid for a currency pair
+      parameters:
+        - { name: from, in: query, required: true, schema: { type: string, example: EUR }, description: Base ISO 4217 currency code }
+        - { name: to, in: query, required: true, schema: { type: string, example: USD }, description: Quote ISO 4217 currency code }
+      responses:
+        "200":
+          description: Live quote
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Quote" }
+              example: { buy: 1.0851, mid: 1.0842, sell: 1.0833 }
+  /latest:
+    get:
+      operationId: getLatest
+      summary: All rates against a base currency
+      parameters:
+        - { name: base, in: query, required: true, schema: { type: string, example: USD }, description: Base ISO 4217 currency code }
+      responses:
+        "200":
+          description: Latest rates keyed by ISO 4217 code
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Latest" }
+  /history:
+    get:
+      operationId: getHistory
+      summary: Historical rate on a given date
+      parameters:
+        - { name: pair, in: query, required: true, schema: { type: string, example: GBP/USD }, description: "Pair as BASE/QUOTE" }
+        - { name: date, in: query, required: true, schema: { type: string, format: date, example: "2026-01-15" } }
+      responses:
+        "200":
+          description: Historical rate
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/HistoryPoint" }
+components:
+  schemas:
+    Quote:
+      type: object
+      required: [buy, mid, sell]
+      properties:
+        buy: { type: number, description: Rate to buy the quote currency }
+        mid: { type: number, description: Mid-market rate }
+        sell: { type: number, description: Rate to sell the quote currency }
+    Latest:
+      type: object
+      properties:
+        base: { type: string, example: USD }
+        asOf: { type: string, format: date-time }
+        rates:
+          type: object
+          additionalProperties: { type: number }
+          example: { EUR: 0.9223, GBP: 0.7854, JPY: 156.44 }
+    HistoryPoint:
+      type: object
+      properties:
+        pair: { type: string, example: GBP/USD }
+        date: { type: string, format: date }
+        rate: { type: number, example: 1.2731 }

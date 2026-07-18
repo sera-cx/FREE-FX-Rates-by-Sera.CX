@@ -18,6 +18,7 @@
 <link rel="icon" href="/favicon-96x96.png" sizes="96x96" type="image/png">
 <link rel="apple-touch-icon" href="/apple-icon-180x180.png" sizes="180x180">
 <link rel="mask-icon" href="/apple-icon-180x180.png" color="#00D26A">
+<link rel="manifest" href="/site.webmanifest">
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
@@ -33,7 +34,7 @@
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@sera_cx">
+<meta name="twitter:site" content="@seraprotocol">
 <meta name="twitter:title" content="Sera FX — Free FX Rates API">
 <meta name="twitter:description" content="Real-time buy, sell &amp; mid-market rates across 160+ currencies. Free forever. No card, no paid tier.">
 <meta name="twitter:image" content="https://fx.sera.cx/assets/og.png">
@@ -359,9 +360,9 @@
       "url": "https://sera.cx",
       "logo": "https://fx.sera.cx/apple-icon-180x180.png",
       "sameAs": [
-        "https://github.com/seraprotocol",
-        "https://docs.sera.cx",
-        "https://community.sera.cx"
+        "https://x.com/seraprotocol",
+        "https://t.me/seraprotocol",
+        "https://github.com/seraprotocol"
       ]
     },
     {
@@ -691,7 +692,7 @@ r <span class="c-punc">=</span> requests<span class="c-punc">.</span><span class
     <div class="repo rv d2">
       <a href="https://github.com/seraprotocol"><div class="r-ic"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="8" r="2.5"/><path d="M6 8.5v7M18 10.5c0 4-6 2.5-6 5.5"/></svg></div><div><h4>Source &amp; SDKs</h4><p>github.com/seraprotocol</p></div></a>
       <a href="https://docs.sera.cx"><div class="r-ic"><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6V3Z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg></div><div><h4>API reference</h4><p>docs.sera.cx</p></div></a>
-      <a href="https://community.sera.cx"><div class="r-ic"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-4 4V5Z"/><path d="M8 9h8M8 12h5"/></svg></div><div><h4>Community &amp; support</h4><p>community.sera.cx</p></div></a>
+      <a href="https://t.me/seraprotocol"><div class="r-ic"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-4 4V5Z"/><path d="M8 9h8M8 12h5"/></svg></div><div><h4>Community &amp; support</h4><p>t.me/seraprotocol</p></div></a>
     </div>
   </div>
 </section>
@@ -760,7 +761,7 @@ r <span class="c-punc">=</span> requests<span class="c-punc">.</span><span class
   <div class="wrap foot-inner">
     <div class="logo" style="font-size:16px"><img class="logo-mark" src="/assets/sera-mark.png" alt="Sera" width="24" height="24" style="width:24px;height:24px;border-radius:7px"> Sera FX</div>
     <div class="foot-links">
-      <a href="#features">Features</a><a href="#docs">API</a><a href="#why">Why free</a><a href="https://sera.cx">sera.cx</a>
+      <a href="#docs">API</a><a href="https://docs.sera.cx">Docs</a><a href="https://x.com/seraprotocol">X</a><a href="https://t.me/seraprotocol">Telegram</a><a href="https://github.com/seraprotocol">GitHub</a><a href="https://sera.cx">sera.cx</a>
     </div>
     <div>© 2026 Sera · Rates for reference, not financial advice</div>
   </div>
@@ -845,7 +846,7 @@ let secs=0;
 const jitter=v=>v+(Math.random()-.5)*0.0012, fmt=v=>v.toFixed(4);
 function upd(id,v){const el=document.getElementById(id);el.textContent=fmt(v);el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');}
 setInterval(()=>{
-  base.mid=jitter(base.mid); base.buy=base.mid+0.0009; base.sell=base.mid-0.0009;
+  base.mid=jitter(base.mid); base.buy=base.mid+0.00009; base.sell=base.mid-0.00009;
   upd('r-buy',base.buy);upd('r-mid',base.mid);upd('r-sell',base.sell);
   document.getElementById('r-spread').textContent=((base.buy-base.sell)*10000).toFixed(1)+' pips';
   secs=0;

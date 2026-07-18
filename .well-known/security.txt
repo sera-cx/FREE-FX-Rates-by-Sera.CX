@@ -1,0 +1,5 @@
+Contact: mailto:security@sera.cx
+Preferred-Languages: en
+Canonical: https://fx.sera.cx/.well-known/security.txt
+Policy: https://sera.cx/security
+Expires: 2027-01-01T00:00:00.000Z
