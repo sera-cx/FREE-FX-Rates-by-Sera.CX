@@ -1,0 +1,27 @@
+# Sera FX — Free FX Rates API
+
+> Sera FX delivers real-time buy, sell and mid-market foreign-exchange rates across 160+ currencies through one clean REST API. Free forever — no credit card, no paid tier, commercial use allowed. Rates are live prices from Sera's on-chain FX settlement engine (600+ stablecoins, 120+ currencies, non-custodial, CertiK-audited), so the same quote you read can be settled on-chain in seconds. MCP server and OpenAPI 3 spec available for AI agents.
+
+## Key facts
+- Price: free, forever. No API key cost, no upgrade tier.
+- Coverage: 160+ currencies, buy/sell/mid quotes on every pair.
+- Refresh: rates update every 60 seconds.
+- Historical data: included, free.
+- Base API URL: https://api.sera.cx/v1
+- Why free: Sera earns from the FX spread on real settlement flow, never from selling data.
+
+## API
+- [API reference](https://docs.sera.cx): full REST documentation
+- [Live quote](https://api.sera.cx/v1/quote?from=EUR&to=USD): buy/sell/mid for a pair
+- [Latest rates](https://api.sera.cx/v1/latest?base=USD): all rates against a base currency
+- [Historical rate](https://api.sera.cx/v1/history?pair=GBP/USD&date=2026-01-15): rate on any date
+- [Agents / MCP + OpenAPI 3](https://agents.sera.cx): quote and settle programmatically
+
+## Resources
+- [Homepage](https://fx.sera.cx/): overview, live converter, docs
+- [Source & SDKs (JavaScript, Python, PHP, Go)](https://github.com/seraprotocol)
+- [Community & support](https://community.sera.cx)
+- [Sera Protocol](https://sera.cx): the on-chain FX settlement engine behind the rates
+
+## Built for
+Indie developers, startups & fintechs, students & researchers, and AI fintech & agents — anyone priced out of enterprise FX data feeds.

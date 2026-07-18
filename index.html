@@ -1,6 +1,956 @@
-<!doctype html>
-<meta charset="utf-8">
-<title>FREE FX Rates by Sera.CX</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<h1>FREE FX Rates by Sera.CX</h1>
-<p>Coming soon at <a href="https://fx.sera.cx">fx.sera.cx</a>.</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sera FX — Free FX Rates API · Real-time buy, sell &amp; mid rates for 160+ currencies</title>
+<meta name="description" content="Free, real-time foreign-exchange rates API from Sera. Buy, sell and mid-market quotes across 160+ currencies, updated every 60 seconds. No credit card, no paid tier, commercial use OK. Powered by Sera's on-chain FX settlement engine.">
+<meta name="keywords" content="free fx api, foreign exchange rates api, currency conversion api, mid-market rate, exchange rate api, forex api, stablecoin fx, on-chain settlement, MCP fx api">
+<meta name="author" content="Sera">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<meta name="theme-color" content="#00D26A">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="canonical" href="https://fx.sera.cx/">
+
+<!-- Favicon / Sera S mark -->
+<link rel="icon" href="/favicon.ico" sizes="16x16" type="image/x-icon">
+<link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/favicon-96x96.png" sizes="96x96" type="image/png">
+<link rel="apple-touch-icon" href="/apple-icon-180x180.png" sizes="180x180">
+<link rel="mask-icon" href="/apple-icon-180x180.png" color="#00D26A">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sera FX">
+<meta property="og:title" content="Sera FX — Free FX Rates API">
+<meta property="og:description" content="Real-time buy, sell &amp; mid-market rates across 160+ currencies through one clean API. Free forever. No card, no paid tier.">
+<meta property="og:url" content="https://fx.sera.cx/">
+<meta property="og:image" content="https://fx.sera.cx/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Sera FX — Free FX Rates API">
+<meta property="og:locale" content="en_US">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@sera_cx">
+<meta name="twitter:title" content="Sera FX — Free FX Rates API">
+<meta name="twitter:description" content="Real-time buy, sell &amp; mid-market rates across 160+ currencies. Free forever. No card, no paid tier.">
+<meta name="twitter:image" content="https://fx.sera.cx/assets/og.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sera:#00D26A;
+    --sera-deep:#1B7A3F;
+    --paper:#FFFFFF;
+    --paper-warm:#FAF7EE;
+    --rule:#E5E7E0;
+    --ink:#0B1426;
+    --ink-muted:#455067;
+    --ink-subtle:#9DA4B3;
+    --buy:#1B5FBF;
+    --sell:#C0392B;
+    --font-sans:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --font-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+    --font-emphasis:"Instrument Serif",Georgia,serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:var(--font-sans);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  em,i{font-family:var(--font-emphasis);font-style:italic;font-weight:400}
+  ::selection{background:rgba(0,210,106,.22)}
+
+  /* scroll progress */
+  .progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:70;background:linear-gradient(90deg,var(--sera),var(--sera-deep));box-shadow:0 0 10px rgba(0,210,106,.5)}
+
+  /* rotating hero word */
+  .rotator{display:inline-grid;vertical-align:baseline}
+  .rotator span{grid-area:1/1;color:var(--sera-deep);opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s;white-space:nowrap;font-family:var(--font-emphasis);font-style:italic;font-weight:400;font-size:1.04em}
+  .rotator span.on{opacity:1;transform:none}
+  .rotator span.out{opacity:0;transform:translateY(-14px)}
+
+  /* subtle animated aurora on light paper */
+  .aurora{position:fixed;inset:0;z-index:-2;overflow:hidden;background:var(--paper)}
+  .blob{position:absolute;border-radius:50%;filter:blur(100px);opacity:.5}
+  .b1{width:55vw;height:55vw;background:radial-gradient(circle,rgba(0,210,106,.35),transparent 62%);top:-18vw;left:-8vw;animation:float1 24s ease-in-out infinite}
+  .b2{width:48vw;height:48vw;background:radial-gradient(circle,rgba(250,247,238,.9),transparent 60%);top:12vh;right:-14vw;animation:float2 28s ease-in-out infinite}
+  .b3{width:42vw;height:42vw;background:radial-gradient(circle,rgba(0,210,106,.16),transparent 62%);bottom:-16vw;left:24vw;animation:float3 32s ease-in-out infinite}
+  @keyframes float1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(7vw,9vh) scale(1.15)}}
+  @keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-9vw,6vh) scale(1.1)}}
+  @keyframes float3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(5vw,-7vh) scale(1.2)}}
+  #net{position:fixed;inset:0;z-index:-1;opacity:.55}
+  .cursor{position:fixed;width:360px;height:360px;border-radius:50%;pointer-events:none;z-index:1;background:radial-gradient(circle,rgba(0,210,106,.09),transparent 65%);transform:translate(-50%,-50%);transition:opacity .3s}
+
+  .wrap{max-width:1160px;margin:0 auto;padding:0 24px;position:relative;z-index:2}
+  .eyebrow{font-family:var(--font-mono);color:var(--sera-deep);font-weight:500;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px}
+  .eyebrow .sec{color:var(--ink-subtle);margin-right:8px}
+  .badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12.5px;font-weight:500;letter-spacing:.04em;color:var(--sera-deep);background:rgba(0,210,106,.08);border:1px solid rgba(0,210,106,.28);padding:7px 15px;border-radius:999px}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--sera);box-shadow:0 0 8px var(--sera);animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,210,106,.5)}70%{box-shadow:0 0 0 8px rgba(0,210,106,0)}100%{box-shadow:0 0 0 0 rgba(0,210,106,0)}}
+
+  /* nav */
+  nav{position:fixed;top:0;left:0;right:0;z-index:60;transition:.35s}
+  nav.scrolled{backdrop-filter:blur(16px);background:rgba(255,255,255,.8);border-bottom:1px solid var(--rule)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:70px;max-width:1160px;margin:0 auto;padding:0 24px}
+  .logo{display:flex;align-items:center;gap:11px;font-weight:700;font-size:20px;letter-spacing:-.02em}
+  .logo-mark{width:31px;height:31px;border-radius:9px;object-fit:cover;display:block;flex:none}
+  .nav-links{display:flex;align-items:center;gap:32px;font-size:14.5px;color:var(--ink-muted);font-weight:500}
+  .nav-links a{position:relative;transition:.2s}
+  .nav-links a::after{content:"";position:absolute;left:0;bottom:-5px;width:0;height:2px;background:var(--sera);transition:.25s}
+  .nav-links a:hover{color:var(--ink)}
+  .nav-links a:hover::after{width:100%}
+  .btn{position:relative;display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:14.5px;padding:11px 20px;border-radius:10px;cursor:pointer;border:1px solid transparent;transition:transform .18s,box-shadow .25s,background .2s;overflow:hidden}
+  .btn-primary{background:var(--sera);color:#04120a;box-shadow:0 8px 22px -10px rgba(0,210,106,.7)}
+  .btn-primary:hover{background:var(--sera-deep);color:#fff;transform:translateY(-2px);box-shadow:0 14px 32px -12px rgba(0,210,106,.7)}
+  .btn-primary::before{content:"";position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(120deg,transparent,rgba(255,255,255,.45),transparent);transition:.6s}
+  .btn-primary:hover::before{left:140%}
+  .btn-ghost{border-color:var(--rule);color:var(--ink);background:rgba(255,255,255,.6)}
+  .btn-ghost:hover{border-color:var(--sera);transform:translateY(-2px)}
+  .hamb{display:none;flex-direction:column;justify-content:center;gap:5px;width:42px;height:42px;border:1px solid var(--rule);border-radius:10px;background:rgba(255,255,255,.6);cursor:pointer;padding:0 10px}
+  .hamb span{display:block;height:2px;background:var(--ink);border-radius:2px;transition:.3s}
+  .hamb.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .hamb.open span:nth-child(2){opacity:0}
+  .hamb.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  .mobile-menu{position:fixed;inset:70px 0 auto 0;z-index:55;background:rgba(255,255,255,.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--rule);padding:8px 24px 24px;transform:translateY(-12px);opacity:0;pointer-events:none;transition:.3s}
+  .mobile-menu.open{transform:none;opacity:1;pointer-events:auto}
+  .mobile-menu a{display:block;padding:15px 4px;font-size:17px;font-weight:500;color:var(--ink);border-bottom:1px solid var(--rule)}
+  .mobile-menu .btn{width:100%;justify-content:center;margin-top:18px}
+  @media(max-width:780px){.nav-links,nav .btn-primary{display:none}.hamb{display:flex}}
+  @media(min-width:781px){.mobile-menu{display:none}}
+
+  /* hero */
+  .hero{position:relative;padding:150px 0 30px;text-align:center}
+  h1{font-size:clamp(44px,7.6vw,88px);line-height:1.0;letter-spacing:-.035em;font-weight:600;margin:26px auto 22px;max-width:15ch}
+  h1 em{color:var(--sera-deep);font-size:1.04em}
+  .sub{font-size:clamp(17px,2.4vw,21px);color:var(--ink-muted);max-width:56ch;margin:0 auto 34px}
+  .hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .btn-lg{padding:15px 30px;font-size:16px;border-radius:12px}
+  .hero-note{margin-top:24px;font-family:var(--font-mono);font-size:12.5px;color:var(--ink-muted);display:flex;gap:22px;justify-content:center;flex-wrap:wrap;letter-spacing:.02em}
+  .hero-note span{display:inline-flex;align-items:center;gap:7px}
+  .check{color:var(--sera-deep)}
+
+  .rv{opacity:0;transform:translateY(32px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+  .rv.in{opacity:1;transform:none}
+  .d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}.d5{transition-delay:.4s}
+
+  /* hero card */
+  .hero-card-wrap{margin-top:60px;perspective:1400px}
+  .hero-card{max-width:520px;margin:0 auto;background:var(--paper-warm);border:1px solid var(--rule);border-radius:20px;padding:26px;box-shadow:0 40px 80px -40px rgba(11,20,38,.35);transform-style:preserve-3d;transition:transform .2s ease-out}
+  .hc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+  .pair-sel{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:19px;font-weight:600;letter-spacing:-.01em}
+  .flag{width:26px;height:26px;border-radius:50%;background:#fff;border:1px solid var(--rule);display:grid;place-items:center;font-size:13px}
+  .live{font-family:var(--font-mono);font-size:11.5px;color:var(--sera-deep);display:inline-flex;align-items:center;gap:6px;font-weight:500;letter-spacing:.06em;text-transform:uppercase}
+  .rates{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .rate{background:#fff;border:1px solid var(--rule);border-radius:13px;padding:16px 12px;text-align:center;transition:.3s}
+  .rate:hover{border-color:var(--sera);transform:translateY(-3px)}
+  .rate .lbl{font-family:var(--font-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-subtle);font-weight:500}
+  .rate .val{font-family:var(--font-mono);font-size:23px;font-weight:600;margin-top:9px;transition:color .2s}
+  .rate.buy .val{color:var(--buy)}.rate.mid .val{color:var(--sera-deep)}.rate.sell .val{color:var(--sell)}
+  .flash{animation:flash .5s}
+  @keyframes flash{0%{filter:brightness(1.4)}100%{filter:brightness(1)}}
+  .spread{margin-top:18px;font-family:var(--font-mono);font-size:12.5px;color:var(--ink-muted);display:flex;justify-content:space-between;border-top:1px solid var(--rule);padding-top:15px;letter-spacing:.02em}
+
+  /* marquee */
+  .ticker{margin-top:66px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);background:var(--paper-warm);overflow:hidden;white-space:nowrap;padding:15px 0}
+  .ticker .label{display:inline-block;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--sera-deep);padding:0 22px}
+  .ticker-track{display:inline-flex;gap:44px;animation:scroll 42s linear infinite;font-family:var(--font-mono);font-size:14px;vertical-align:middle}
+  .ticker:hover .ticker-track{animation-play-state:paused}
+  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .tk{display:inline-flex;align-items:center;gap:9px;color:var(--ink-muted)}
+  .tk b{color:var(--ink);font-weight:600}
+  .up{color:var(--sera-deep)}.down{color:var(--sell)}
+
+  section{padding:100px 0;position:relative}
+  h2{font-size:clamp(30px,4.6vw,50px);letter-spacing:-.03em;font-weight:600;line-height:1.04}
+  h2 em{color:var(--sera-deep)}
+  .lead{color:var(--ink-muted);font-size:18px;max-width:60ch;margin-top:16px}
+  .center{text-align:center}.center .lead{margin-left:auto;margin-right:auto}
+
+  /* converter */
+  .conv{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center}
+  @media(max-width:900px){.conv{grid-template-columns:1fr;gap:32px}}
+  .conv-card{background:var(--paper-warm);border:1px solid var(--rule);border-radius:20px;padding:30px;box-shadow:0 40px 80px -40px rgba(11,20,38,.3)}
+  .field{background:#fff;border:1px solid var(--rule);border-radius:13px;padding:14px 16px;display:flex;align-items:center;gap:12px;transition:.25s}
+  .field:focus-within{border-color:var(--sera);box-shadow:0 0 0 4px rgba(0,210,106,.1)}
+  .field input{background:none;border:none;color:var(--ink);font-size:26px;font-weight:600;width:100%;outline:none;font-family:var(--font-mono)}
+  .field select{background:#fff;border:1px solid var(--rule);color:var(--ink);font-size:14px;font-weight:600;padding:9px 12px;border-radius:9px;outline:none;cursor:pointer;font-family:var(--font-sans)}
+  .swap{display:grid;place-items:center;margin:12px 0}
+  .swap button{width:42px;height:42px;border-radius:50%;border:1px solid var(--rule);background:#fff;color:var(--sera-deep);font-size:18px;cursor:pointer;transition:.3s}
+  .swap button:hover{transform:rotate(180deg);border-color:var(--sera)}
+  .conv-out{margin-top:20px;text-align:center;font-family:var(--font-mono);font-size:13px;color:var(--ink-muted)}
+  .conv-rate{color:var(--sera-deep);font-weight:600}
+
+  /* features */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:52px;background:var(--rule);border:1px solid var(--rule);border-radius:20px;overflow:hidden}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+  .feat{position:relative;background:var(--paper);padding:30px;transition:background .3s;overflow:hidden}
+  .feat::before{content:"";position:absolute;inset:0;background:radial-gradient(360px circle at var(--mx,50%) var(--my,0%),rgba(0,210,106,.08),transparent 45%);opacity:0;transition:opacity .3s}
+  .feat:hover{background:var(--paper-warm)}
+  .feat:hover::before{opacity:1}
+  .feat .ic{width:46px;height:46px;border-radius:12px;background:rgba(0,210,106,.1);display:grid;place-items:center;font-size:21px;margin-bottom:18px;border:1px solid rgba(0,210,106,.2)}
+  .feat h3{font-size:18.5px;font-weight:600;letter-spacing:-.01em;margin-bottom:9px}
+  .feat p{color:var(--ink-muted);font-size:14.5px}
+
+  /* stats */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;border:1px solid var(--rule);border-radius:20px;padding:44px 30px;background:var(--paper-warm)}
+  @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr);gap:34px 20px}}
+  .stat{text-align:center}
+  .stat .n{font-family:var(--font-mono);font-size:clamp(32px,4.4vw,48px);font-weight:600;letter-spacing:-.02em;color:var(--sera-deep)}
+  .stat .l{font-family:var(--font-mono);color:var(--ink-muted);font-size:12.5px;margin-top:8px;letter-spacing:.03em;text-transform:uppercase}
+
+  /* code */
+  .code{background:var(--ink);border:1px solid var(--ink);border-radius:16px;overflow:hidden;font-family:var(--font-mono);font-size:13.5px;box-shadow:0 40px 80px -40px rgba(11,20,38,.5)}
+  .code-head{display:flex;align-items:center;gap:8px;padding:13px 16px;border-bottom:1px solid rgba(255,255,255,.08)}
+  .tl{width:11px;height:11px;border-radius:50%}
+  .tl.r{background:#ff5f56}.tl.y{background:#ffbd2e}.tl.g{background:#27c93f}
+  .code-head .path{margin-left:8px;color:#6b7688;font-size:12px}
+  .code-body{padding:20px;line-height:1.75;overflow-x:auto;color:#c8d0de}
+  .c-key{color:#7fd3ff}.c-str{color:var(--sera)}.c-num{color:#ffcf7a}.c-com{color:#5b6982}.c-punc{color:#8a97b0}.c-mut{color:#ff9d8a}
+
+  /* code tabs */
+  .tabs{display:flex;gap:4px;padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02);align-items:center}
+  .tab{font-family:var(--font-mono);font-size:12.5px;color:#8a97b0;padding:6px 13px;border-radius:8px;cursor:pointer;transition:.2s;border:1px solid transparent}
+  .tab:hover{color:#c8d0de}
+  .tab.active{color:var(--sera);background:rgba(0,210,106,.1);border-color:rgba(0,210,106,.25)}
+  .copy{margin-left:auto;display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:12px;color:#8a97b0;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);padding:6px 12px;border-radius:8px;cursor:pointer;transition:.2s}
+  .copy:hover{color:#fff;border-color:rgba(255,255,255,.25)}
+  .copy.done{color:var(--sera);border-color:rgba(0,210,106,.4)}
+  .snippet{display:none}.snippet.active{display:block}
+
+  /* free band */
+  .free-band{position:relative;border-radius:24px;padding:64px 44px;text-align:center;overflow:hidden;border:1px solid var(--rule);background:var(--paper-warm)}
+  .free-band h2{max-width:22ch;margin:0 auto}
+  .pill-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+  .pill{background:#fff;border:1px solid var(--rule);border-radius:999px;padding:11px 22px;font-family:var(--font-mono);font-size:13px;font-weight:500;letter-spacing:.02em}
+  .pill .check{margin-right:7px}
+
+  /* mission */
+  .mission{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:start}
+  @media(max-width:900px){.mission{grid-template-columns:1fr;gap:32px}}
+  .mission .lead{font-size:19px;margin-top:20px}
+  .mission .lead + .lead{margin-top:18px}
+  .mission-side{background:var(--paper-warm);border:1px solid var(--rule);border-radius:20px;padding:28px}
+  .ms-row{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid var(--rule)}
+  .ms-row:first-child{padding-top:0}
+  .ms-row:last-child{border-bottom:none;padding-bottom:0}
+  .ms-ic{flex:none;width:38px;height:38px;border-radius:10px;background:rgba(0,210,106,.1);border:1px solid rgba(0,210,106,.2);display:grid;place-items:center;font-size:17px}
+  .ms-row h4{font-size:14.5px;font-weight:600;margin-bottom:3px}
+  .ms-row p{font-size:13.5px;color:var(--ink-muted);line-height:1.5}
+  .ms-row a{color:var(--sera-deep);font-weight:600;border-bottom:1px solid rgba(0,210,106,.3);transition:.2s}
+  .ms-row a:hover{border-color:var(--sera-deep)}
+
+  /* repo strip */
+  .repo{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:26px;background:var(--rule);border:1px solid var(--rule);border-radius:16px;overflow:hidden}
+  @media(max-width:760px){.repo{grid-template-columns:1fr}}
+  .repo a{background:var(--paper);padding:22px 24px;display:flex;align-items:center;gap:14px;transition:background .25s}
+  .repo a:hover{background:var(--paper-warm)}
+  .repo .r-ic{flex:none;width:40px;height:40px;border-radius:11px;background:rgba(0,210,106,.1);border:1px solid rgba(0,210,106,.2);display:grid;place-items:center}
+  .ic svg,.ms-ic svg,.r-ic svg{width:22px;height:22px;stroke:var(--sera-deep);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;display:block}
+  .ms-ic svg{width:19px;height:19px}
+  .repo h4{font-size:14.5px;font-weight:600}
+  .repo p{font-family:var(--font-mono);font-size:12px;color:var(--ink-muted);margin-top:2px}
+
+  /* endpoints */
+  .ep{border:1px solid var(--rule);border-radius:15px;overflow:hidden;margin-top:16px;font-family:var(--font-mono);font-size:14px;background:var(--paper)}
+  .ep-row{display:flex;align-items:center;gap:14px;padding:17px 22px;border-bottom:1px solid var(--rule);transition:.2s}
+  .ep-row:last-child{border-bottom:none}
+  .ep-row:hover{background:var(--paper-warm)}
+  .method{font-size:11.5px;font-weight:600;padding:4px 11px;border-radius:6px;background:rgba(0,210,106,.12);color:var(--sera-deep)}
+  .ep-desc{margin-left:auto;color:var(--ink-muted);font-size:13px;font-family:var(--font-sans)}
+  @media(max-width:640px){.ep-desc{display:none}}
+  code.inl{font-family:var(--font-mono);color:var(--sera-deep)}
+
+  /* audience cards */
+  .aud-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:52px}
+  @media(max-width:900px){.aud-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.aud-grid{grid-template-columns:1fr}}
+  .aud{position:relative;background:var(--paper);border:1px solid var(--rule);border-radius:18px;padding:26px;transition:.3s;overflow:hidden}
+  .aud.feature{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .aud:hover{transform:translateY(-5px);border-color:var(--sera);box-shadow:0 24px 50px -30px rgba(0,210,106,.5)}
+  .aud .ic{width:44px;height:44px;border-radius:12px;background:rgba(0,210,106,.1);border:1px solid rgba(0,210,106,.2);display:grid;place-items:center;margin-bottom:16px}
+  .aud.feature .ic{background:rgba(0,210,106,.18);border-color:rgba(0,210,106,.4)}
+  .aud .ic svg{width:22px;height:22px;stroke:var(--sera-deep);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .aud.feature .ic svg{stroke:var(--sera)}
+  .aud h3{font-size:17px;font-weight:600;margin-bottom:7px}
+  .aud p{font-size:13.5px;color:var(--ink-muted)}
+  .aud.feature p{color:#aab4c8}
+  .aud .tag{display:inline-block;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--sera);background:rgba(0,210,106,.14);padding:3px 9px;border-radius:6px;margin-bottom:14px}
+
+  /* markets */
+  .markets{border:1px solid var(--rule);border-radius:22px;overflow:hidden;background:var(--paper);box-shadow:0 40px 80px -50px rgba(11,20,38,.4)}
+  .mk-head{display:flex;align-items:center;gap:16px;padding:20px 24px;border-bottom:1px solid var(--rule);flex-wrap:wrap}
+  .mk-pair{font-family:var(--font-mono);font-size:20px;font-weight:600;display:flex;align-items:center;gap:10px}
+  .mk-select{display:flex;align-items:center;gap:10px}
+  .mk-select select{font-family:var(--font-mono);font-size:17px;font-weight:600;color:var(--ink);background:var(--paper-warm);border:1px solid var(--rule);padding:8px 12px;border-radius:10px;cursor:pointer;outline:none;transition:.2s}
+  .mk-select select:hover{border-color:var(--sera)}
+  .mk-select select:focus{border-color:var(--sera);box-shadow:0 0 0 3px rgba(0,210,106,.12)}
+  .mk-arrow{width:34px;height:34px;flex:none;border-radius:9px;border:1px solid var(--rule);background:var(--paper-warm);color:var(--sera-deep);font-size:16px;cursor:pointer;transition:.3s;display:grid;place-items:center}
+  .mk-arrow:hover{border-color:var(--sera);transform:rotate(180deg)}
+  .mk-price{font-family:var(--font-mono);font-size:20px;font-weight:600;color:var(--sera-deep)}
+  .mk-chg{font-family:var(--font-mono);font-size:13px;padding:3px 9px;border-radius:6px;background:rgba(0,210,106,.12);color:var(--sera-deep)}
+  .tf{display:flex;gap:6px;margin-left:auto}
+  .tf button{font-family:var(--font-mono);font-size:12px;color:var(--ink-muted);background:none;border:1px solid var(--rule);padding:5px 12px;border-radius:7px;cursor:pointer;transition:.2s}
+  .tf button.active{color:var(--sera-deep);background:rgba(0,210,106,.1);border-color:rgba(0,210,106,.3)}
+  .chart-wrap{padding:18px 12px 22px}
+  #chart{width:100%;height:280px;display:block}
+
+  /* settlement band */
+  .settle{position:relative;border-radius:24px;padding:56px 44px;overflow:hidden;background:var(--ink);color:#fff}
+  .settle .glow{position:absolute;width:60%;height:200%;top:-50%;right:-10%;background:radial-gradient(closest-side,rgba(0,210,106,.28),transparent 70%);pointer-events:none}
+  .settle h2{color:#fff;max-width:20ch}
+  .settle h2 em{color:var(--sera)}
+  .settle .lead{color:#aab4c8;max-width:56ch}
+  .settle-flow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:30px 0;font-family:var(--font-mono);font-size:13px}
+  .sf{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:11px 16px}
+  .sf.on{background:rgba(0,210,106,.16);border-color:rgba(0,210,106,.4);color:var(--sera)}
+  .sf-arrow{color:var(--sera);font-size:16px}
+  .settle-stats{display:flex;gap:34px;flex-wrap:wrap;margin-top:8px}
+  .settle-stats div span{display:block}
+  .settle-stats .sn{font-family:var(--font-mono);font-size:26px;font-weight:600;color:var(--sera)}
+  .settle-stats .sl{font-size:12.5px;color:#aab4c8;font-family:var(--font-mono)}
+
+  /* comparison */
+  .cmp{margin-top:48px;border:1px solid var(--rule);border-radius:18px;overflow:hidden}
+  .cmp-row{display:grid;grid-template-columns:1.6fr 1fr 1fr;border-bottom:1px solid var(--rule)}
+  .cmp-row:last-child{border-bottom:none}
+  .cmp-row>div{padding:16px 22px;font-size:14.5px;display:flex;align-items:center;gap:8px}
+  .cmp-row .lbl{color:var(--ink-muted);font-weight:500}
+  .cmp-row.head>div{font-family:var(--font-mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-subtle);background:var(--paper-warm)}
+  .cmp-row .sera-col{background:rgba(0,210,106,.06);font-weight:600;color:var(--ink);border-left:1px solid rgba(0,210,106,.25);border-right:1px solid rgba(0,210,106,.25)}
+  .cmp-row.head .sera-col{color:var(--sera-deep);background:rgba(0,210,106,.1)}
+  .cmp .yes{color:var(--sera-deep)}.cmp .no{color:var(--ink-subtle)}
+  @media(max-width:640px){.cmp-row>div{padding:13px 14px;font-size:12.5px}}
+
+  /* faq */
+  .faq{margin-top:44px;border:1px solid var(--rule);border-radius:18px;overflow:hidden}
+  .qa{border-bottom:1px solid var(--rule)}
+  .qa:last-child{border-bottom:none}
+  .qa button{width:100%;text-align:left;background:var(--paper);border:none;padding:22px 24px;font-family:var(--font-sans);font-size:16.5px;font-weight:600;color:var(--ink);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;transition:.2s}
+  .qa button:hover{background:var(--paper-warm)}
+  .qa .ans{max-height:0;overflow:hidden;transition:max-height .35s ease;color:var(--ink-muted);font-size:15px}
+  .qa .ans p{padding:0 24px 22px}
+  .qa.open .ans{max-height:220px}
+  .qa .pm{flex:none;width:22px;height:22px;position:relative;transition:transform .3s}
+  .qa .pm::before,.qa .pm::after{content:"";position:absolute;background:var(--sera-deep);border-radius:2px}
+  .qa .pm::before{top:10px;left:2px;right:2px;height:2px}
+  .qa .pm::after{left:10px;top:2px;bottom:2px;width:2px;transition:opacity .3s}
+  .qa.open .pm::after{opacity:0}
+
+  .final{text-align:center;padding:120px 0}
+  .final h2{font-size:clamp(34px,5.5vw,60px)}
+  footer{border-top:1px solid var(--rule);padding:44px 0;color:var(--ink-muted);font-size:13.5px;position:relative;z-index:2;background:var(--paper-warm)}
+  .foot-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+  .foot-links{display:flex;gap:24px;font-family:var(--font-mono);font-size:12.5px;letter-spacing:.02em}
+  .foot-links a{transition:.2s}.foot-links a:hover{color:var(--ink)}
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://fx.sera.cx/#org",
+      "name": "Sera",
+      "url": "https://sera.cx",
+      "logo": "https://fx.sera.cx/apple-icon-180x180.png",
+      "sameAs": [
+        "https://github.com/seraprotocol",
+        "https://docs.sera.cx",
+        "https://community.sera.cx"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://fx.sera.cx/#site",
+      "url": "https://fx.sera.cx/",
+      "name": "Sera FX",
+      "description": "Free real-time FX rates API — buy, sell and mid-market quotes across 160+ currencies.",
+      "publisher": { "@id": "https://fx.sera.cx/#org" }
+    },
+    {
+      "@type": "WebAPI",
+      "@id": "https://fx.sera.cx/#api",
+      "name": "Sera FX Rates API",
+      "description": "Free REST API for real-time buy, sell and mid-market foreign-exchange rates across 160+ currencies, updated every 60 seconds. Historical data included. MCP and OpenAPI 3 native.",
+      "url": "https://fx.sera.cx/",
+      "documentation": "https://docs.sera.cx",
+      "provider": { "@id": "https://fx.sera.cx/#org" },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://fx.sera.cx/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is it really free — what's the catch?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes, fully free with no paid tier. Sera runs the on-chain FX settlement engine and earns from the spread on real payment flow, not from selling data. Opening the rates costs us nothing extra and brings builders into the ecosystem." }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need a credit card or KYC?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. Sign up, get an API key, and start calling. No card, no sales call, no KYC to read rates." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is it suitable for AI fintech and agents?",
+          "acceptedAnswer": { "@type": "Answer", "text": "It's built for it. Beyond the REST API, Sera exposes an MCP server and OpenAPI 3 spec at agents.sera.cx, so LLM apps, copilots and autonomous payment agents can quote and settle programmatically with trustworthy FX at inference time." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use it in a commercial product?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Commercial use is allowed. Attribution terms depend on the license you build under — the SDKs are permissively licensed and the rate data carries a simple attribution requirement." }
+        },
+        {
+          "@type": "Question",
+          "name": "How is this different from just a rates API?",
+          "acceptedAnswer": { "@type": "Answer", "text": "The rates aren't a static feed — they're live prices from Sera's settlement engine. So the same quote you read can be cleared on-chain across 600+ stablecoins and 120+ currencies, non-custodial, in seconds." }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<div class="aurora"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<canvas id="net"></canvas>
+<div class="cursor" id="cursor"></div>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <a class="logo" href="/" aria-label="Sera FX home"><img class="logo-mark" src="/assets/sera-mark.png" alt="Sera" width="31" height="31"> Sera <span style="color:var(--sera-deep);margin-left:-5px">FX</span></a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#markets">Markets</a>
+      <a href="#built">Built for</a>
+      <a href="#docs">API</a>
+      <a href="#why">Why free</a>
+    </div>
+    <a class="btn btn-primary" href="#docs">Get started →</a>
+    <button class="hamb" id="hamb" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#features">Features</a>
+  <a href="#markets">Markets</a>
+  <a href="#built">Built for</a>
+  <a href="#docs">API</a>
+  <a href="#why">Why free</a>
+  <a class="btn btn-primary" href="#docs">Get started →</a>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <h1 class="rv in d1">FX rates for <span class="rotator" id="rotator"><span class="on">everyone.</span></span> <em>Free, forever.</em></h1>
+    <p class="sub rv in d2">Sera FX delivers real-time buy, sell and mid-market rates across 160+ currencies through one clean API. No credit card. No paid tier. No catch.</p>
+    <div class="hero-cta rv in d3">
+      <a class="btn btn-primary btn-lg mag" href="#docs">Grab your free key</a>
+      <a class="btn btn-ghost btn-lg mag" href="#docs">Read the docs</a>
+    </div>
+    <div class="hero-note rv in d4">
+      <span><span class="check">✓</span> 100% free</span>
+      <span><span class="check">✓</span> No card required</span>
+      <span><span class="check">✓</span> 160+ currencies</span>
+      <span><span class="check">✓</span> 60-second refresh</span>
+    </div>
+
+    <div class="hero-card-wrap rv in d5">
+      <div class="hero-card" id="tiltCard">
+        <div class="hc-top">
+          <div class="pair-sel"><span class="flag">🇪🇺</span> EUR / USD <span class="flag">🇺🇸</span></div>
+          <div class="live"><span class="dot"></span> Live</div>
+        </div>
+        <div class="rates">
+          <div class="rate buy"><div class="lbl">Buy</div><div class="val" id="r-buy">1.0851</div></div>
+          <div class="rate mid"><div class="lbl">Mid</div><div class="val" id="r-mid">1.0842</div></div>
+          <div class="rate sell"><div class="lbl">Sell</div><div class="val" id="r-sell">1.0833</div></div>
+        </div>
+        <div class="spread"><span>SPREAD</span><span id="r-spread">1.8 pips</span></div>
+        <div class="spread" style="border:none;padding-top:8px"><span>UPDATED</span><span id="r-ago">just now</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ticker">
+    <span class="label">Live rates</span>
+    <div class="ticker-track" id="tick"></div>
+  </div>
+</header>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="wrap center">
+    <h2 class="rv d1">Financial-grade data, <em>zero-dollar</em> price.</h2>
+    <p class="lead rv d2">The reliability of an enterprise feed, without the enterprise invoice.</p>
+  </div>
+  <div class="wrap">
+    <div class="grid rv d1">
+      <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg></div><h3>60-second refresh</h3><p>Rates updated every minute from aggregated interbank and market-maker feeds — not once-a-day snapshots.</p></div>
+      <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><path d="M7 7h13m0 0-4-4m4 4-4 4M17 17H4m0 0 4-4m-4 4 4 4"/></svg></div><h3>Buy · sell · mid</h3><p>Full two-way quotes on every pair, so you price real conversions instead of showing a reference rate.</p></div>
+      <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.8 5.7 3.8 9S14.5 18.5 12 21c-2.5-2.5-3.8-5.7-3.8-9S9.5 5.5 12 3Z"/></svg></div><h3>160+ currencies</h3><p>Every major and most minor currencies, plus common crosses. One base, any target, both directions.</p></div>
+      <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v4h4"/><path d="M12 8v4l3 2"/></svg></div><h3>Historical data</h3><p>Query any rate back through years of history for backtesting, reporting and reconciliation — also free.</p></div>
+      <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="4.5"/><path d="m11 11 8 8m-3-3 2-2m-4 0 2-2"/></svg></div><h3>No card, no tier</h3><p>Sign up, get a key, start calling. There's no upgrade page because there's nothing to upgrade to.</p></div>
+      <div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><path d="M8 4H7a3 3 0 0 0-3 3v3l-2 2 2 2v3a3 3 0 0 0 3 3h1m8-16h1a3 3 0 0 1 3 3v3l2 2-2 2v3a3 3 0 0 1-3 3h-1"/></svg></div><h3>Clean JSON &amp; SDKs</h3><p>Predictable responses with official libraries for JavaScript, Python, PHP and Go. Copy, paste, ship.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONVERTER -->
+<section id="converter">
+  <div class="wrap conv">
+    <div class="rv">
+      <h2>Real conversions, <em>real spreads.</em></h2>
+      <p class="lead">Most APIs hand you a mid rate and call it done. Sera FX returns buy, sell and mid — so the number your users see is the number they actually get. Play with it →</p>
+      <div class="code rv d2" id="playground" style="margin-top:28px">
+        <div class="tabs">
+          <span class="tab active" data-lang="curl">curl</span>
+          <span class="tab" data-lang="js">JavaScript</span>
+          <span class="tab" data-lang="py">Python</span>
+          <span class="tab" data-lang="go">Go</span>
+          <button class="copy" id="copyBtn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg> Copy</button>
+        </div>
+        <div class="code-body">
+<div class="snippet active" data-lang="curl"><span class="c-com"># Live EUR→USD quote</span><br>
+<span class="c-mut">curl</span> https://api.sera.cx/v1/quote?<span class="c-key">from</span><span class="c-punc">=</span><span class="c-str">EUR</span>&amp;<span class="c-key">to</span><span class="c-punc">=</span><span class="c-str">USD</span><br><br>
+<span class="c-punc">{</span> <span class="c-key">"buy"</span><span class="c-punc">:</span> <span class="c-num">1.0851</span><span class="c-punc">,</span> <span class="c-key">"mid"</span><span class="c-punc">:</span> <span class="c-num">1.0842</span><span class="c-punc">,</span> <span class="c-key">"sell"</span><span class="c-punc">:</span> <span class="c-num">1.0833</span> <span class="c-punc">}</span></div>
+<div class="snippet" data-lang="js"><span class="c-key">const</span> res <span class="c-punc">=</span> <span class="c-key">await</span> <span class="c-mut">fetch</span><span class="c-punc">(</span><span class="c-str">'https://api.sera.cx/v1/quote?from=EUR&amp;to=USD'</span><span class="c-punc">);</span><br>
+<span class="c-key">const</span> <span class="c-punc">{</span> buy<span class="c-punc">,</span> mid<span class="c-punc">,</span> sell <span class="c-punc">}</span> <span class="c-punc">=</span> <span class="c-key">await</span> res<span class="c-punc">.</span><span class="c-mut">json</span><span class="c-punc">();</span><br>
+<span class="c-mut">console</span><span class="c-punc">.</span><span class="c-mut">log</span><span class="c-punc">(</span>mid<span class="c-punc">);</span> <span class="c-com">// 1.0842</span></div>
+<div class="snippet" data-lang="py"><span class="c-key">import</span> requests<br>
+r <span class="c-punc">=</span> requests<span class="c-punc">.</span><span class="c-mut">get</span><span class="c-punc">(</span><span class="c-str">"https://api.sera.cx/v1/quote"</span><span class="c-punc">,</span><br>
+&nbsp;&nbsp;params<span class="c-punc">=</span><span class="c-punc">{</span><span class="c-str">"from"</span><span class="c-punc">:</span> <span class="c-str">"EUR"</span><span class="c-punc">,</span> <span class="c-str">"to"</span><span class="c-punc">:</span> <span class="c-str">"USD"</span><span class="c-punc">})</span><br>
+<span class="c-mut">print</span><span class="c-punc">(</span>r<span class="c-punc">.</span><span class="c-mut">json</span><span class="c-punc">()[</span><span class="c-str">"mid"</span><span class="c-punc">])</span> <span class="c-com"># 1.0842</span></div>
+<div class="snippet" data-lang="go"><span class="c-mut">res</span><span class="c-punc">,</span> _ <span class="c-punc">:=</span> http<span class="c-punc">.</span><span class="c-mut">Get</span><span class="c-punc">(</span><span class="c-str">"https://api.sera.cx/v1/quote?from=EUR&amp;to=USD"</span><span class="c-punc">)</span><br>
+<span class="c-key">defer</span> res<span class="c-punc">.</span>Body<span class="c-punc">.</span><span class="c-mut">Close</span><span class="c-punc">()</span><br>
+<span class="c-key">var</span> q Quote<span class="c-punc">;</span> json<span class="c-punc">.</span><span class="c-mut">NewDecoder</span><span class="c-punc">(</span>res<span class="c-punc">.</span>Body<span class="c-punc">).</span><span class="c-mut">Decode</span><span class="c-punc">(&amp;</span>q<span class="c-punc">)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="conv-card rv d2">
+      <div class="field">
+        <input id="amt" type="number" value="1000" min="0">
+        <select id="from">
+          <option value="EUR">🇪🇺 EUR</option><option value="USD">🇺🇸 USD</option>
+          <option value="GBP">🇬🇧 GBP</option><option value="JPY">🇯🇵 JPY</option>
+          <option value="CHF">🇨🇭 CHF</option><option value="AUD">🇦🇺 AUD</option>
+        </select>
+      </div>
+      <div class="swap"><button id="swap" title="Swap">⇅</button></div>
+      <div class="field">
+        <input id="res" type="text" value="1084.20" readonly>
+        <select id="to">
+          <option value="USD">🇺🇸 USD</option><option value="EUR">🇪🇺 EUR</option>
+          <option value="GBP">🇬🇧 GBP</option><option value="JPY">🇯🇵 JPY</option>
+          <option value="CHF">🇨🇭 CHF</option><option value="AUD">🇦🇺 AUD</option>
+        </select>
+      </div>
+      <div class="conv-out">Mid rate <span class="conv-rate" id="cr">1 EUR = 1.0842 USD</span> · updates every 60s</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="stats rv">
+      <div class="stat"><div class="n" data-count="160" data-suffix="+">0</div><div class="l">Currencies covered</div></div>
+      <div class="stat"><div class="n" data-count="60" data-suffix="s">0</div><div class="l">Rate refresh</div></div>
+      <div class="stat"><div class="n" data-count="99.9" data-suffix="%">0</div><div class="l">Uptime target</div></div>
+      <div class="stat"><div class="n" data-prefix="$" data-count="0">$0</div><div class="l">Now &amp; always</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MARKETS -->
+<section id="markets">
+  <div class="wrap center">
+    <h2 class="rv">Watch every pair, <em>live.</em></h2>
+    <p class="lead rv d1">A rates hub in the spirit of the classics — charts, spreads and a full board — except the data is open and the settlement is on-chain.</p>
+  </div>
+  <div class="wrap" style="margin-top:44px">
+    <div class="markets rv d1">
+      <div class="mk-head">
+        <div class="mk-select">
+          <select id="mkFrom" aria-label="Base currency"></select>
+          <button class="mk-arrow" id="mkSwap" title="Swap currencies" aria-label="Swap">⇄</button>
+          <select id="mkTo" aria-label="Quote currency"></select>
+        </div>
+        <div class="mk-price" id="mkPrice">1.0842</div>
+        <div class="mk-chg" id="mkChg">▲ 0.12%</div>
+        <div class="tf">
+          <button data-tf="24H" class="active">24H</button>
+          <button data-tf="7D">7D</button>
+          <button data-tf="30D">30D</button>
+          <button data-tf="1Y">1Y</button>
+        </div>
+      </div>
+      <div id="chartPane">
+        <div class="chart-wrap"><svg id="chart" viewBox="0 0 720 280" preserveAspectRatio="none"></svg></div>
+      </div>
+    </div>
+    <p class="rv d2" style="text-align:center;font-family:var(--font-mono);font-size:12px;color:var(--ink-subtle);margin-top:16px">Pick any base and quote currency, or hit ⇄ to flip the pair · rates from Sera's on-chain settlement engine</p>
+  </div>
+</section>
+
+<!-- BUILT FOR -->
+<section id="built">
+  <div class="wrap center">
+    <h2 class="rv">Built for the ones <em>priced out</em> of FX data.</h2>
+    <p class="lead rv d1">Enterprise feeds start in the thousands per month. Everyone below that line has been stuck with stale, hobbled free tiers. Not anymore.</p>
+  </div>
+  <div class="wrap">
+    <div class="aud-grid">
+      <div class="aud feature rv d1">
+        <span class="tag">New frontier</span>
+        <div class="ic"><svg viewBox="0 0 24 24"><rect x="5" y="8" width="14" height="11" rx="2"/><path d="M12 8V5m-3 0h6M9 13h.01M15 13h.01M9 16h6"/></svg></div>
+        <h3>AI fintech &amp; agents</h3><p>Purpose-built for autonomous finance — LLM apps, trading copilots, and payment agents that need trustworthy FX at inference time. MCP + OpenAPI native.</p>
+      </div>
+      <div class="aud rv d2"><div class="ic"><svg viewBox="0 0 24 24"><path d="M8 3H4v18h16V9l-6-6H8Z"/><path d="M14 3v6h6M9 13h6M9 17h4"/></svg></div><h3>Indie developers</h3><p>Ship a converter, invoicing tool or dashboard without a rate-data invoice. No card, no gatekeeping.</p></div>
+      <div class="aud rv d3"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 8l9-4 9 4-9 4-9-4Z"/><path d="M7 10v5c0 1.5 2.5 3 5 3s5-1.5 5-3v-5"/></svg></div><h3>Students &amp; researchers</h3><p>Full history for backtests, theses and coursework. Query years of rates, free, no scraping.</p></div>
+      <div class="aud rv d4"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 20V10m5 10V4m5 16v-7m5 7V8"/></svg></div><h3>Startups &amp; fintechs</h3><p>Remittance, treasury and payments MVPs — prototype on the same rates the settlement engine runs on.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SETTLEMENT ROUTING -->
+<section id="settle">
+  <div class="wrap">
+    <div class="settle rv">
+      <div class="glow"></div>
+      <h2>Don't just read the rate — <em>settle on it.</em></h2>
+      <p class="lead">Every quote Sera FX returns is a price the network can actually clear. When you're ready to move value, route the same conversion through Sera's on-chain settlement engine: 600+ stablecoins, 120+ currencies, non-custodial, in seconds.</p>
+      <div class="settle-flow">
+        <span class="sf">Read rate · Sera FX</span>
+        <span class="sf-arrow">→</span>
+        <span class="sf">Build swap</span>
+        <span class="sf-arrow">→</span>
+        <span class="sf on">Settle on-chain · Sera</span>
+        <span class="sf-arrow">→</span>
+        <span class="sf">Local payout</span>
+      </div>
+      <div class="settle-stats">
+        <div><span class="sn">~0.14%</span><span class="sl">all-in cost to LP</span></div>
+        <div><span class="sn">&lt;1s</span><span class="sl">settlement</span></div>
+        <div><span class="sn">0 bps</span><span class="sl">slippage at par</span></div>
+        <div><span class="sn">CertiK</span><span class="sl">audited</span></div>
+      </div>
+      <div style="margin-top:30px;display:flex;gap:12px;flex-wrap:wrap">
+        <a class="btn btn-primary btn-lg mag" href="https://app.sera.cx/swap">Route a settlement →</a>
+        <a class="btn btn-ghost btn-lg mag" href="https://docs.sera.cx" style="border-color:rgba(255,255,255,.2);color:#fff;background:rgba(255,255,255,.04)">How routing works</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY FREE / MISSION -->
+<section id="why">
+  <div class="wrap mission">
+    <div class="rv">
+      <h2>Free because the rates <em>already exist.</em></h2>
+      <p class="lead">Sera runs the on-chain FX settlement engine for stablecoins — routing 600+ stablecoins across 120+ currencies, non-custodial and audited by CertiK. Every cross-border payment that clears through Sera is priced, in real time, by that engine.</p>
+      <p class="lead">Exposing those prices as a public API costs us nothing extra. And it helps the builders — remittance apps, fintechs, and AI agents — who send real flow back through the protocol. Sera earns from the FX spread on settlement, <em>never</em> from selling data. So the data stays free, forever.</p>
+      <div class="pill-row" style="justify-content:flex-start">
+        <span class="pill"><span class="check">✓</span> No paid plan</span>
+        <span class="pill"><span class="check">✓</span> No hidden limits</span>
+        <span class="pill"><span class="check">✓</span> Commercial use OK</span>
+      </div>
+    </div>
+
+    <div class="mission-side rv d2">
+      <div class="ms-row">
+        <div class="ms-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3M5 5l2 2m10 10 2 2M19 5l-2 2M7 17l-2 2"/></svg></div>
+        <div><h4>Maintained by Sera Protocol</h4><p>Built and run by the team behind the on-chain FX settlement engine. Rates sourced from Sera's live CLOB — both sides quoted at market.</p></div>
+      </div>
+      <div class="ms-row">
+        <div class="ms-ic"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <div><h4>Audited &amp; non-custodial</h4><p>The settlement protocol powering these rates is audited by <a href="https://www.sera.cx/technology">CertiK</a>. No custody, no counterparty, atomic on-chain fills.</p></div>
+      </div>
+      <div class="ms-row">
+        <div class="ms-ic"><svg viewBox="0 0 24 24"><path d="M12 6c-2-1.3-4.5-2-8-2v13c3.5 0 6 .7 8 2 2-1.3 4.5-2 8-2V4c-3.5 0-6 .7-8 2Zm0 0v13"/></svg></div>
+        <div><h4>Open &amp; documented</h4><p>Full REST reference at <a href="https://docs.sera.cx">docs.sera.cx</a>. Client SDKs are open source and community-maintained.</p></div>
+      </div>
+      <div class="ms-row">
+        <div class="ms-ic"><svg viewBox="0 0 24 24"><rect x="5" y="8" width="14" height="11" rx="2"/><path d="M12 8V5m-3 0h6M9 13h.01M15 13h.01M9 16h6"/></svg></div>
+        <div><h4>Agent-native</h4><p>MCP server and OpenAPI 3 spec live at <a href="https://agents.sera.cx">agents.sera.cx</a> — quote and settle programmatically.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap" style="margin-top:22px">
+    <div class="repo rv d2">
+      <a href="https://github.com/seraprotocol"><div class="r-ic"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="8" r="2.5"/><path d="M6 8.5v7M18 10.5c0 4-6 2.5-6 5.5"/></svg></div><div><h4>Source &amp; SDKs</h4><p>github.com/seraprotocol</p></div></a>
+      <a href="https://docs.sera.cx"><div class="r-ic"><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6V3Z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg></div><div><h4>API reference</h4><p>docs.sera.cx</p></div></a>
+      <a href="https://community.sera.cx"><div class="r-ic"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-4 4V5Z"/><path d="M8 9h8M8 12h5"/></svg></div><div><h4>Community &amp; support</h4><p>community.sera.cx</p></div></a>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section id="compare">
+  <div class="wrap center">
+    <h2 class="rv">The same data. <em>None of the bill.</em></h2>
+    <p class="lead rv d1">What you'd pay a legacy provider for — and what Sera FX gives away.</p>
+  </div>
+  <div class="wrap">
+    <div class="cmp rv d1">
+      <div class="cmp-row head"><div>Feature</div><div>Typical paid API</div><div class="sera-col">Sera FX</div></div>
+      <div class="cmp-row"><div class="lbl">Price</div><div>$50–2,000+ / mo</div><div class="sera-col">Free, forever</div></div>
+      <div class="cmp-row"><div class="lbl">Credit card to start</div><div>Usually required</div><div class="sera-col">Never</div></div>
+      <div class="cmp-row"><div class="lbl">Buy / sell / mid</div><div>Mid only on free tiers</div><div class="sera-col">All three</div></div>
+      <div class="cmp-row"><div class="lbl">Refresh rate</div><div>Daily on free tiers</div><div class="sera-col">Every 60 seconds</div></div>
+      <div class="cmp-row"><div class="lbl">Historical data</div><div>Paid add-on</div><div class="sera-col">Included</div></div>
+      <div class="cmp-row"><div class="lbl">Commercial use</div><div>Higher-tier only</div><div class="sera-col">Allowed</div></div>
+      <div class="cmp-row"><div class="lbl">On-chain settlement</div><div>Not available</div><div class="sera-col">Route through Sera</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DOCS -->
+<section id="docs">
+  <div class="wrap">
+    <h2 class="rv d1">Three endpoints. <em>That's the whole surface.</em></h2>
+    <p class="lead rv d2">REST, JSON, and a key you get in ten seconds. Base URL <code class="inl">https://api.sera.cx/v1</code></p>
+    <div class="ep rv d2">
+      <div class="ep-row"><span class="method">GET</span><span>/quote?from=EUR&amp;to=USD</span><span class="ep-desc">Live buy / sell / mid for a pair</span></div>
+      <div class="ep-row"><span class="method">GET</span><span>/latest?base=USD</span><span class="ep-desc">All rates against a base currency</span></div>
+      <div class="ep-row"><span class="method">GET</span><span>/history?pair=GBP/USD&amp;date=2026-01-15</span><span class="ep-desc">Historical rate on any date</span></div>
+    </div>
+    <div class="rv d3" style="margin-top:24px">
+      <a class="btn btn-primary btn-lg mag" href="#">Get your free key</a>
+      <a class="btn btn-ghost btn-lg mag" href="#" style="margin-left:10px">Full documentation</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <h2 class="rv">Questions, <em>answered.</em></h2>
+    <div class="faq rv d1">
+      <div class="qa"><button>Is it really free — what's the catch?<span class="pm"></span></button><div class="ans"><p>Yes, fully free with no paid tier. Sera runs the on-chain FX settlement engine and earns from the spread on real payment flow, not from selling data. Opening the rates costs us nothing extra and brings builders into the ecosystem.</p></div></div>
+      <div class="qa"><button>Do I need a credit card or KYC?<span class="pm"></span></button><div class="ans"><p>No. Sign up, get an API key, and start calling. No card, no sales call, no KYC to read rates.</p></div></div>
+      <div class="qa"><button>Is it suitable for AI fintech and agents?<span class="pm"></span></button><div class="ans"><p>It's built for it. Beyond the REST API, Sera exposes an MCP server and OpenAPI 3 spec at agents.sera.cx, so LLM apps, copilots and autonomous payment agents can quote and settle programmatically with trustworthy FX at inference time.</p></div></div>
+      <div class="qa"><button>Can I use it in a commercial product?<span class="pm"></span></button><div class="ans"><p>Yes. Commercial use is allowed. Attribution terms depend on the license you build under — the SDKs are permissively licensed and the rate data carries a simple attribution requirement.</p></div></div>
+      <div class="qa"><button>How is this different from just a rates API?<span class="pm"></span></button><div class="ans"><p>The rates aren't a static feed — they're live prices from Sera's settlement engine. So the same quote you read can be cleared on-chain across 600+ stablecoins and 120+ currencies, non-custodial, in seconds.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section class="final">
+  <div class="wrap">
+    <h2 class="rv d1" style="margin:0 auto 22px;max-width:16ch">Start pulling <em>live rates</em> today.</h2>
+    <p class="sub rv d2" style="margin-bottom:32px">Free key, no card, no limits to worry about. Just accurate FX where you need it.</p>
+    <a class="btn btn-primary btn-lg mag rv d3" href="#">Get started free →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div class="logo" style="font-size:16px"><img class="logo-mark" src="/assets/sera-mark.png" alt="Sera" width="24" height="24" style="width:24px;height:24px;border-radius:7px"> Sera FX</div>
+    <div class="foot-links">
+      <a href="#features">Features</a><a href="#docs">API</a><a href="#why">Why free</a><a href="https://sera.cx">sera.cx</a>
+    </div>
+    <div>© 2026 Sera · Rates for reference, not financial advice</div>
+  </div>
+</footer>
+
+<script>
+const cur=document.getElementById('cursor');
+addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';});
+addEventListener('mouseleave',()=>cur.style.opacity=0);
+addEventListener('mouseenter',()=>cur.style.opacity=1);
+
+const nav=document.getElementById('nav'),prog=document.getElementById('progress');
+addEventListener('scroll',()=>{
+  nav.classList.toggle('scrolled',scrollY>30);
+  const h=document.documentElement.scrollHeight-innerHeight;
+  prog.style.width=(h>0?(scrollY/h)*100:0)+'%';
+});
+
+/* rotating hero word */
+const words=['everyone.','developers.','startups.','students.','fintechs.','AI agents.'];
+const rot=document.getElementById('rotator');let wi=0;
+setInterval(()=>{
+  const cur=rot.querySelector('span:not(.out)');
+  wi=(wi+1)%words.length;
+  const nx=document.createElement('span');nx.textContent=words[wi];rot.appendChild(nx);
+  requestAnimationFrame(()=>{nx.classList.add('on');cur.classList.add('out');cur.classList.remove('on');});
+  setTimeout(()=>cur.remove(),600);
+},2400);
+
+const hamb=document.getElementById('hamb'),mm=document.getElementById('mobileMenu');
+hamb.addEventListener('click',()=>{hamb.classList.toggle('open');mm.classList.toggle('open');});
+mm.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{hamb.classList.remove('open');mm.classList.remove('open');}));
+
+const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}}),{threshold:.14});
+document.querySelectorAll('.rv:not(.in)').forEach(el=>io.observe(el));
+
+const cio=new IntersectionObserver(es=>es.forEach(en=>{
+  if(!en.isIntersecting)return; const el=en.target; cio.unobserve(el);
+  const t=parseFloat(el.dataset.count), pre=el.dataset.prefix||'', suf=el.dataset.suffix||'', dec=(t%1!==0)?1:0;
+  let s=0; const step=t/60;
+  const tick=()=>{s+=step; if(s>=t){el.textContent=pre+t.toFixed(dec)+suf;return;} el.textContent=pre+s.toFixed(dec)+suf; requestAnimationFrame(tick);};
+  tick();
+}),{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(el=>cio.observe(el));
+
+document.querySelectorAll('.mag').forEach(b=>{
+  b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();const x=e.clientX-r.left-r.width/2;const y=e.clientY-r.top-r.height/2;b.style.transform=`translate(${x*.22}px,${y*.35}px)`;});
+  b.addEventListener('mouseleave',()=>b.style.transform='');
+});
+
+document.querySelectorAll('.feat').forEach(f=>{
+  f.addEventListener('mousemove',e=>{const r=f.getBoundingClientRect();f.style.setProperty('--mx',(e.clientX-r.left)+'px');f.style.setProperty('--my',(e.clientY-r.top)+'px');});
+});
+
+const card=document.getElementById('tiltCard'),cw=card.parentElement;
+cw.addEventListener('mousemove',e=>{const r=cw.getBoundingClientRect();const px=(e.clientX-r.left)/r.width-.5;const py=(e.clientY-r.top)/r.height-.5;card.style.transform=`rotateY(${px*10}deg) rotateX(${-py*10}deg) translateZ(8px)`;});
+cw.addEventListener('mouseleave',()=>card.style.transform='');
+
+/* code tabs + copy */
+const raw={
+  curl:`curl https://api.sera.cx/v1/quote?from=EUR&to=USD`,
+  js:`const res = await fetch('https://api.sera.cx/v1/quote?from=EUR&to=USD');\nconst { buy, mid, sell } = await res.json();\nconsole.log(mid);`,
+  py:`import requests\nr = requests.get("https://api.sera.cx/v1/quote",\n  params={"from": "EUR", "to": "USD"})\nprint(r.json()["mid"])`,
+  go:`res, _ := http.Get("https://api.sera.cx/v1/quote?from=EUR&to=USD")\ndefer res.Body.Close()\nvar q Quote; json.NewDecoder(res.Body).Decode(&q)`
+};
+let curLang='curl';
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  curLang=t.dataset.lang;
+  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===t));
+  document.querySelectorAll('.snippet').forEach(s=>s.classList.toggle('active',s.dataset.lang===curLang));
+}));
+const copyBtn=document.getElementById('copyBtn');
+copyBtn.addEventListener('click',()=>{
+  navigator.clipboard.writeText(raw[curLang]).then(()=>{
+    copyBtn.classList.add('done');copyBtn.lastChild.textContent=' Copied';
+    setTimeout(()=>{copyBtn.classList.remove('done');copyBtn.lastChild.textContent=' Copy';},1600);
+  });
+});
+
+const base={buy:1.0851,mid:1.0842,sell:1.0833};
+let secs=0;
+const jitter=v=>v+(Math.random()-.5)*0.0012, fmt=v=>v.toFixed(4);
+function upd(id,v){const el=document.getElementById(id);el.textContent=fmt(v);el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');}
+setInterval(()=>{
+  base.mid=jitter(base.mid); base.buy=base.mid+0.0009; base.sell=base.mid-0.0009;
+  upd('r-buy',base.buy);upd('r-mid',base.mid);upd('r-sell',base.sell);
+  document.getElementById('r-spread').textContent=((base.buy-base.sell)*10000).toFixed(1)+' pips';
+  secs=0;
+},2600);
+setInterval(()=>{secs++;document.getElementById('r-ago').textContent=secs<=1?'just now':secs+'s ago';},1000);
+
+const pairs=[['EUR/USD',1.0842,.12],['GBP/USD',1.2731,-.08],['USD/JPY',156.44,.21],['USD/CHF',.8912,-.05],['AUD/USD',.6673,.09],['USD/CAD',1.3688,.04],['USD/CNY',7.2415,-.02],['USD/INR',83.52,.06],['EUR/GBP',.8516,.03],['NZD/USD',.6104,-.07]];
+const tick=document.getElementById('tick');
+const mk=p=>`<span class="tk"><b>${p[0]}</b> ${p[1]} <span class="${p[2]>=0?'up':'down'}">${p[2]>=0?'▲':'▼'} ${Math.abs(p[2]).toFixed(2)}%</span></span>`;
+tick.innerHTML=[...pairs,...pairs].map(mk).join('');
+
+const R={EUR:1,USD:1.0842,GBP:0.8516,JPY:169.6,CHF:0.966,AUD:1.624};
+const $=id=>document.getElementById(id);
+function conv(){
+  const a=parseFloat($('amt').value)||0, f=$('from').value, t=$('to').value, rate=R[t]/R[f];
+  $('res').value=(a*rate).toLocaleString(undefined,{maximumFractionDigits:2,minimumFractionDigits:2});
+  $('cr').textContent=`1 ${f} = ${rate.toFixed(4)} ${t}`;
+}
+['amt','from','to'].forEach(id=>$(id).addEventListener('input',conv));
+$('swap').addEventListener('click',()=>{const f=$('from').value;$('from').value=$('to').value;$('to').value=f;conv();});
+conv();
+
+/* FAQ accordion */
+document.querySelectorAll('.qa button').forEach(b=>b.addEventListener('click',()=>{
+  const qa=b.parentElement,open=qa.classList.contains('open');
+  document.querySelectorAll('.qa').forEach(x=>x.classList.remove('open'));
+  if(!open)qa.classList.add('open');
+}));
+
+/* branded FX area chart — pair-driven */
+const svg=document.getElementById('chart');
+const W2=720,H2=280;
+// value of 1 unit in USD
+const usd={USD:1,EUR:1.0842,GBP:1.2731,JPY:0.006393,CHF:1.1220,AUD:0.6673,CAD:0.7301,SGD:0.7458,CNY:0.1381,INR:0.011973,BRL:0.20112};
+const flags={USD:'🇺🇸',EUR:'🇪🇺',GBP:'🇬🇧',JPY:'🇯🇵',CHF:'🇨🇭',AUD:'🇦🇺',CAD:'🇨🇦',SGD:'🇸🇬',CNY:'🇨🇳',INR:'🇮🇳',BRL:'🇧🇷'};
+const ccy=Object.keys(usd);
+const midOf=(f,t)=>usd[f]/usd[t];
+const dp=p=>p>=100?2:p>=10?3:4; // decimals by magnitude
+let pair={from:'EUR',to:'USD'}, curTf='24H';
+
+// populate selects
+const fromSel=document.getElementById('mkFrom'),toSel=document.getElementById('mkTo');
+ccy.forEach(c=>{
+  fromSel.insertAdjacentHTML('beforeend',`<option value="${c}" ${c==='EUR'?'selected':''}>${flags[c]} ${c}</option>`);
+  toSel.insertAdjacentHTML('beforeend',`<option value="${c}" ${c==='USD'?'selected':''}>${flags[c]} ${c}</option>`);
+});
+
+function seed(n,vol,start){const a=[start];for(let i=1;i<n;i++)a.push(Math.max(a[i-1]+(Math.random()-.5)*vol,start*0.5));return a;}
+const tfCfg={'24H':[48,.0035],'7D':[56,.011],'30D':[60,.028],'1Y':[64,.075]};
+function drawChart(){
+  const [n,frac]=tfCfg[curTf];
+  const start=midOf(pair.from,pair.to), vol=start*frac;
+  const d=seed(n,vol,start);
+  const min=Math.min(...d),max=Math.max(...d),pad=(max-min)*.2||start*.01;
+  const lo=min-pad,hi=max+pad;
+  const X=i=>i/(n-1)*W2, Y=v=>H2-((v-lo)/(hi-lo))*H2;
+  let line='';
+  d.forEach((v,i)=>{line+=(i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)+' ';});
+  const area=line+`L${W2} ${H2} L0 ${H2} Z`;
+  const up=d[n-1]>=d[0], col=up?'#00D26A':'#C0392B', deep=up?'#1B7A3F':'#C0392B';
+  svg.innerHTML=`<defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="${col}" stop-opacity=".28"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs>
+    <path d="${area}" fill="url(#cg)"/>
+    <path d="${line}" fill="none" stroke="${deep}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" style="stroke-dasharray:3000;stroke-dashoffset:3000;animation:draw 1.1s ease forwards"/>
+    <circle cx="${X(n-1).toFixed(1)}" cy="${Y(d[n-1]).toFixed(1)}" r="4" fill="${deep}"/>`;
+  const chg=((d[n-1]-d[0])/d[0]*100);
+  document.getElementById('mkPrice').textContent=d[n-1].toFixed(dp(start));
+  const chgEl=document.getElementById('mkChg');
+  chgEl.textContent=(chg>=0?'▲ ':'▼ ')+Math.abs(chg).toFixed(2)+'%';
+  chgEl.style.color=up?'var(--sera-deep)':'var(--sell)';
+  chgEl.style.background=up?'rgba(0,210,106,.12)':'rgba(192,57,43,.1)';
+}
+const dstyle=document.createElement('style');dstyle.textContent='@keyframes draw{to{stroke-dashoffset:0}}';document.head.appendChild(dstyle);
+
+function setPair(f,t){
+  if(f===t)return; // no identical pair
+  pair={from:f,to:t};fromSel.value=f;toSel.value=t;
+  drawChart();
+}
+fromSel.addEventListener('change',()=>setPair(fromSel.value,toSel.value===fromSel.value?pair.from:toSel.value));
+toSel.addEventListener('change',()=>setPair(fromSel.value===toSel.value?pair.to:fromSel.value,toSel.value));
+document.getElementById('mkSwap').addEventListener('click',()=>setPair(pair.to,pair.from));
+document.querySelectorAll('.tf button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.tf button').forEach(x=>x.classList.toggle('active',x===b));
+  curTf=b.dataset.tf;drawChart();
+}));
+drawChart();
+
+const cv=document.getElementById('net'),ctx=cv.getContext('2d');
+let W,H,pts;
+function rs(){W=cv.width=innerWidth;H=cv.height=innerHeight;const n=Math.min(60,Math.floor(W/26));pts=Array.from({length:n},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35}));}
+rs();addEventListener('resize',rs);
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  for(const p of pts){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;}
+  for(let i=0;i<pts.length;i++){
+    for(let j=i+1;j<pts.length;j++){
+      const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.hypot(dx,dy);
+      if(d<130){ctx.strokeStyle=`rgba(27,122,63,${(1-d/130)*.13})`;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.stroke();}
+    }
+    ctx.fillStyle='rgba(0,210,106,.5)';ctx.beginPath();ctx.arc(pts[i].x,pts[i].y,1.5,0,7);ctx.fill();
+  }
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+</body>
+</html>
