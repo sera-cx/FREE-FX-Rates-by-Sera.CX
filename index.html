@@ -841,17 +841,34 @@ copyBtn.addEventListener('click',()=>{
   });
 });
 
+const API_BASE='https://api.sera.cx/v1';
 const base={buy:1.0851,mid:1.0842,sell:1.0833};
-let secs=0;
+let secs=0, LIVE=false;
 const jitter=v=>v+(Math.random()-.5)*0.0012, fmt=v=>v.toFixed(4);
 function upd(id,v){const el=document.getElementById(id);el.textContent=fmt(v);el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');}
+function paintHero(){upd('r-buy',base.buy);upd('r-mid',base.mid);upd('r-sell',base.sell);document.getElementById('r-spread').textContent=((base.buy-base.sell)*10000).toFixed(1)+' pips';secs=0;}
 setInterval(()=>{
-  base.mid=jitter(base.mid); base.buy=base.mid+0.00009; base.sell=base.mid-0.00009;
-  upd('r-buy',base.buy);upd('r-mid',base.mid);upd('r-sell',base.sell);
-  document.getElementById('r-spread').textContent=((base.buy-base.sell)*10000).toFixed(1)+' pips';
-  secs=0;
+  if(!LIVE){ base.mid=jitter(base.mid); base.buy=base.mid+0.00009; base.sell=base.mid-0.00009; }
+  paintHero();
 },2600);
 setInterval(()=>{secs++;document.getElementById('r-ago').textContent=secs<=1?'just now':secs+'s ago';},1000);
+
+/* Progressive enhancement: use real Sera FX rates as soon as api.sera.cx is public.
+   Falls back silently to the simulation above while the API is unavailable (404/CORS). */
+async function pullQuote(from,to){
+  try{
+    const r=await fetch(`${API_BASE}/quote?from=${from}&to=${to}`,{cache:'no-store'});
+    if(!r.ok)return null;
+    const j=await r.json();
+    if(['buy','mid','sell'].every(k=>typeof j[k]==='number'&&isFinite(j[k])))return j;
+  }catch(e){}
+  return null;
+}
+async function hydrateHero(){
+  const q=await pullQuote('EUR','USD');
+  if(q){LIVE=true;base.buy=q.buy;base.mid=q.mid;base.sell=q.sell;paintHero();}
+}
+hydrateHero(); setInterval(hydrateHero,60000);
 
 const pairs=[['EUR/USD',1.0842,.12],['GBP/USD',1.2731,-.08],['USD/JPY',156.44,.21],['USD/CHF',.8912,-.05],['AUD/USD',.6673,.09],['USD/CAD',1.3688,.04],['USD/CNY',7.2415,-.02],['USD/INR',83.52,.06],['EUR/GBP',.8516,.03],['NZD/USD',.6104,-.07]];
 const tick=document.getElementById('tick');
@@ -868,6 +885,19 @@ function conv(){
 ['amt','from','to'].forEach(id=>$(id).addEventListener('input',conv));
 $('swap').addEventListener('click',()=>{const f=$('from').value;$('from').value=$('to').value;$('to').value=f;conv();});
 conv();
+
+/* Hydrate the converter from real rates (EUR base) when the API is public; no-op otherwise. */
+async function hydrateConverter(){
+  try{
+    const r=await fetch(`${API_BASE}/latest?base=EUR`,{cache:'no-store'});
+    if(!r.ok)return;
+    const j=await r.json(), rates=j&&j.rates;
+    if(!rates||typeof rates!=='object')return;
+    Object.keys(R).forEach(k=>{if(k!=='EUR'&&typeof rates[k]==='number'&&isFinite(rates[k]))R[k]=rates[k];});
+    conv();
+  }catch(e){}
+}
+hydrateConverter(); setInterval(hydrateConverter,60000);
 
 /* FAQ accordion */
 document.querySelectorAll('.qa button').forEach(b=>b.addEventListener('click',()=>{
