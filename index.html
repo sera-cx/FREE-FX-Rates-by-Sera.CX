@@ -841,7 +841,14 @@ copyBtn.addEventListener('click',()=>{
   });
 });
 
-const API_BASE='https://api.sera.cx/v1';
+/* Real rates will come from a server-side rates layer (a CORS-enabled core-API endpoint,
+   or a Cloudflare Worker holding the API key), computed from Sera's orderbook mid
+   (best bid/ask). The core API https://api.sera.cx/api/v1 is a signed on-chain orderbook
+   with no public price endpoint and no CORS, so the browser cannot call it directly.
+   Until that layer ships, the simulation below runs. To go live: point API_BASE at the
+   rates layer and set LIVE_RATES_ENABLED = true. */
+const LIVE_RATES_ENABLED=false;
+const API_BASE='https://api.sera.cx/api/v1';
 const base={buy:1.0851,mid:1.0842,sell:1.0833};
 let secs=0, LIVE=false;
 const jitter=v=>v+(Math.random()-.5)*0.0012, fmt=v=>v.toFixed(4);
@@ -868,7 +875,7 @@ async function hydrateHero(){
   const q=await pullQuote('EUR','USD');
   if(q){LIVE=true;base.buy=q.buy;base.mid=q.mid;base.sell=q.sell;paintHero();}
 }
-hydrateHero(); setInterval(hydrateHero,60000);
+if(LIVE_RATES_ENABLED){ hydrateHero(); setInterval(hydrateHero,60000); }
 
 const pairs=[['EUR/USD',1.0842,.12],['GBP/USD',1.2731,-.08],['USD/JPY',156.44,.21],['USD/CHF',.8912,-.05],['AUD/USD',.6673,.09],['USD/CAD',1.3688,.04],['USD/CNY',7.2415,-.02],['USD/INR',83.52,.06],['EUR/GBP',.8516,.03],['NZD/USD',.6104,-.07]];
 const tick=document.getElementById('tick');
@@ -897,7 +904,7 @@ async function hydrateConverter(){
     conv();
   }catch(e){}
 }
-hydrateConverter(); setInterval(hydrateConverter,60000);
+if(LIVE_RATES_ENABLED){ hydrateConverter(); setInterval(hydrateConverter,60000); }
 
 /* FAQ accordion */
 document.querySelectorAll('.qa button').forEach(b=>b.addEventListener('click',()=>{

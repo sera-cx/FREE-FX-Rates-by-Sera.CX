@@ -28,7 +28,11 @@ cited by ChatGPT, Claude, Perplexity and Gemini.
 - `GROWTH.md` — distribution loops, GEO domination, GTM.
 
 ## Notes
-- The homepage converter/ticker currently uses illustrative simulated rates (as designed).
-  Wire them to the live `api.sera.cx` endpoints once `/v1/quote` etc. are public + CORS-enabled.
+- The homepage converter/ticker use illustrative **simulated** rates (feature-flagged via
+  `LIVE_RATES_ENABLED` in `index.html`). The marketed `api.sera.cx/v1/quote` rates API does
+  **not exist yet**: the real core API is a signed on-chain orderbook at `api.sera.cx/api/v1`
+  (EIP-712 auth, no public price endpoint, no CORS). To go live, build a server-side rates
+  layer that computes buy/mid/sell from the **orderbook mid** and serves them CORS-enabled,
+  then flip the flag and point `API_BASE` at it. See `openapi.yaml` for the target contract.
 - Deploy: pushing to `main` publishes to GitHub Pages. Set DNS `fx CNAME sera-cx.github.io`
   and enable "Enforce HTTPS" once the certificate provisions.

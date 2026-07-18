@@ -7,8 +7,12 @@ info:
     160+ currencies, updated every 60 seconds, with free historical data.
     Rates are live prices from Sera's on-chain FX settlement engine.
 
-    DRAFT: this spec reflects the endpoints documented on fx.sera.cx. Reconcile with
-    the live api.sera.cx contract before publishing (endpoints currently return 404).
+    TARGET CONTRACT (not yet live): this is the simple rates API the fx.sera.cx site
+    markets. It does NOT exist on the core API today. The core API is a signed on-chain
+    orderbook at https://api.sera.cx/api/v1 (EIP-712 auth, no public price endpoint, no
+    CORS). To deliver these endpoints, stand up a server-side rates layer (CORS-enabled
+    core-API route, or a Cloudflare Worker holding the key) that computes buy/mid/sell
+    from the orderbook mid (best bid/ask). Point `servers.url` at that layer.
   contact:
     name: Sera
     url: https://docs.sera.cx
