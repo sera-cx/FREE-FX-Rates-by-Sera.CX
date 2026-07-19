@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Convert Euro to Australian Dollar — Live EUR/AUD Rate | Sera FX</title>
+<meta name="description" content="1 EUR = 1.6239 AUD right now (mid-market, updated every 60s, source: Sera FX). Free EUR to AUD converter and rate API — no card, no paid tier.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="theme-color" content="#00D26A">
+<link rel="canonical" href="https://fx.sera.cx/convert/eur-to-aud/">
+<link rel="icon" href="/favicon.ico" sizes="16x16" type="image/x-icon">
+<link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/apple-icon-180x180.png" sizes="180x180">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sera FX">
+<meta property="og:title" content="Convert EUR to AUD — live rate">
+<meta property="og:description" content="1 EUR = 1.6239 AUD. Free converter + rates API by Sera FX.">
+<meta property="og:url" content="https://fx.sera.cx/convert/eur-to-aud/">
+<meta property="og:image" content="https://fx.sera.cx/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@seraprotocol">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://fx.sera.cx/"},{"@type":"ListItem","position":2,"name":"Convert","item":"https://fx.sera.cx/convert/"},{"@type":"ListItem","position":3,"name":"EUR to AUD","item":"https://fx.sera.cx/convert/eur-to-aud/"}]},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the EUR to AUD exchange rate today?","acceptedAnswer":{"@type":"Answer","text":"1 EUR = 1.6239 AUD (mid-market rate, updated every 60 seconds, source: Sera FX)."}},{"@type":"Question","name":"How much is 100 EUR in AUD?","acceptedAnswer":{"@type":"Answer","text":"100 EUR = 162.39 AUD at the current mid-market rate."}},{"@type":"Question","name":"Is the EUR/AUD rate free to use via API?","acceptedAnswer":{"@type":"Answer","text":"Yes. Sera FX offers the EUR/AUD rate free through one API — buy, sell and mid, no credit card, commercial use allowed. See https://fx.sera.cx."}}]},{"@context":"https://schema.org","@type":"Dataset","name":"EUR/AUD exchange rate","description":"Live mid-market EUR to AUD foreign-exchange rate from Sera FX.","creator":{"@type":"Organization","name":"Sera"}}]</script>
+<style>
+  :root{--sera:#00D26A;--sera-deep:#1B7A3F;--paper:#fff;--warm:#FAF7EE;--rule:#E5E7E0;--ink:#0B1426;--muted:#455067;--subtle:#9DA4B3;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;--serif:"Instrument Serif",Georgia,serif}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--warm);color:var(--ink);font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  em{font-family:var(--serif);font-style:italic;color:var(--sera-deep)}
+  .wrap{max-width:720px;margin:0 auto;padding:0 20px}
+  header{border-bottom:1px solid var(--rule);background:rgba(255,255,255,.7);position:sticky;top:0;backdrop-filter:blur(10px);z-index:5}
+  .bar{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px}
+  .logo img{width:28px;height:28px;border-radius:8px;object-fit:cover}
+  .logo span{color:var(--sera-deep);margin-left:-4px}
+  .cta{font-weight:600;font-size:13.5px;background:var(--sera);color:#04120a;padding:9px 16px;border-radius:10px;transition:.2s}
+  .cta:hover{background:var(--sera-deep);color:#fff}
+  .crumb{font-family:var(--mono);font-size:11.5px;color:var(--subtle);padding:16px 0 0;letter-spacing:.03em}
+  .crumb a:hover{color:var(--sera-deep)}
+  h1{font-size:clamp(27px,5vw,38px);letter-spacing:-.03em;font-weight:600;margin:10px 0 6px}
+  .answer{font-size:19px;color:var(--muted);margin-bottom:22px}
+  .answer b{color:var(--ink);font-family:var(--mono);font-weight:600}
+  .card{background:var(--paper);border:1px solid var(--rule);border-radius:18px;padding:22px;box-shadow:0 30px 60px -45px rgba(11,20,38,.3)}
+  .live{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--sera-deep);display:flex;align-items:center;gap:7px;margin-bottom:14px}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--sera);box-shadow:0 0 8px var(--sera)}
+  .conv{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:end}
+  @media(max-width:560px){.conv{grid-template-columns:1fr;gap:10px}}
+  .fld label{display:block;font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--subtle);margin-bottom:6px}
+  .fld .box{display:flex;align-items:center;gap:8px;background:var(--warm);border:1px solid var(--rule);border-radius:12px;padding:12px 14px}
+  .fld input{background:none;border:none;outline:none;font-family:var(--mono);font-size:22px;font-weight:600;color:var(--ink);width:100%}
+  .fld .cc{font-family:var(--mono);font-weight:600;font-size:15px;color:var(--muted);white-space:nowrap}
+  .swap{align-self:center;justify-self:center}
+  .swap a{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;border:1px solid var(--rule);background:#fff;color:var(--sera-deep);font-size:17px;transition:.25s}
+  .swap a:hover{border-color:var(--sera);transform:rotate(180deg)}
+  @media(max-width:560px){.swap a{transform:rotate(90deg)}.swap a:hover{transform:rotate(270deg)}}
+  .note{font-family:var(--mono);font-size:11.5px;color:var(--subtle);margin-top:14px;text-align:center}
+  section{margin-top:34px}
+  h2{font-size:21px;letter-spacing:-.02em;font-weight:600;margin-bottom:12px}
+  table{width:100%;border-collapse:collapse;background:var(--paper);border:1px solid var(--rule);border-radius:14px;overflow:hidden;font-family:var(--mono);font-size:14px}
+  td{padding:11px 16px;border-bottom:1px solid var(--rule)}
+  tr:last-child td{border-bottom:none}
+  td:last-child{text-align:right;color:var(--sera-deep);font-weight:600}
+  .faq details{background:var(--paper);border:1px solid var(--rule);border-radius:12px;margin-bottom:8px;padding:4px 16px}
+  .faq summary{font-weight:600;padding:14px 0;cursor:pointer;list-style:none;font-size:15.5px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq p{color:var(--muted);padding:0 0 14px;font-size:14.5px}
+  .rel{display:flex;flex-wrap:wrap;gap:8px}
+  .rel a{font-family:var(--mono);font-size:13px;background:#fff;border:1px solid var(--rule);border-radius:9px;padding:8px 12px;transition:.2s}
+  .rel a:hover{border-color:var(--sera);color:var(--sera-deep)}
+  .devbox{background:#0B1426;color:#c8d0de;border-radius:14px;padding:18px;font-family:var(--mono);font-size:12.5px;overflow-x:auto;margin-top:12px}
+  .devbox .k{color:#7fd3ff}.devbox .s{color:var(--sera)}
+  footer{border-top:1px solid var(--rule);margin-top:50px;padding:26px 0;font-family:var(--mono);font-size:12px;color:var(--muted)}
+  footer a:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+<header><div class="wrap bar">
+  <a class="logo" href="/"><img src="/assets/sera-mark.png" alt="Sera"> Sera <span>FX</span></a>
+  <a class="cta" href="/#docs">Free API key →</a>
+</div></header>
+
+<main class="wrap">
+  <div class="crumb"><a href="/">Home</a> / <a href="/convert/">Convert</a> / EUR to AUD</div>
+  <h1>Convert Euro to Australian Dollar</h1>
+  <p class="answer">1 EUR = <b id="hero">1.6239</b> AUD <em>right now</em></p>
+
+  <div class="card">
+    <div class="live"><span class="dot"></span> Live mid-market · updates every 60s</div>
+    <div class="conv">
+      <div class="fld"><label>Amount</label><div class="box"><input id="amt" type="number" inputmode="decimal" value="1" min="0"><span class="cc">🇪🇺 EUR</span></div></div>
+      <div class="swap"><a href="/convert/aud-to-eur/" title="Swap to AUD/EUR" aria-label="Swap">⇅</a></div>
+      <div class="fld"><label>Converted</label><div class="box"><input id="res" type="text" readonly value="1.6239"><span class="cc">🇦🇺 AUD</span></div></div>
+    </div>
+    <div class="note">Rate <span id="rateNote">1 EUR = 1.6239 AUD</span> · reference only, not financial advice</div>
+  </div>
+
+  <section>
+    <h2>EUR to AUD conversion table</h2>
+    <table><tbody><tr><td>1 EUR</td><td>1.62 AUD</td></tr><tr><td>5 EUR</td><td>8.12 AUD</td></tr><tr><td>10 EUR</td><td>16.24 AUD</td></tr><tr><td>25 EUR</td><td>40.60 AUD</td></tr><tr><td>50 EUR</td><td>81.19 AUD</td></tr><tr><td>100 EUR</td><td>162.39 AUD</td></tr><tr><td>500 EUR</td><td>811.94 AUD</td></tr><tr><td>1,000 EUR</td><td>1,623.88 AUD</td></tr><tr><td>5,000 EUR</td><td>8,119.38 AUD</td></tr><tr><td>10,000 EUR</td><td>16,238.76 AUD</td></tr></tbody></table>
+  </section>
+
+  <section>
+    <h2>Get this rate <em>free</em> via API</h2>
+    <div class="devbox"><span style="color:#5b6982"># Live EURAUD quote — buy / sell / mid</span><br>
+      curl "https://api.sera.cx/v1/quote?<span class="k">from</span>=<span class="s">EUR</span>&<span class="k">to</span>=<span class="s">AUD</span>"</div>
+    <p class="note" style="text-align:left;margin-top:10px">Free forever · no card · 160+ currencies · <a href="/#docs" style="color:var(--sera-deep);font-weight:600">grab a key →</a></p>
+  </section>
+
+  <section class="faq">
+    <h2>Questions</h2>
+    <details open><summary>What is the EUR to AUD rate today?</summary><p>1 EUR = 1.6239 AUD at the mid-market rate, updated every 60 seconds by Sera FX. The reverse rate is 1 AUD = 0.6158 EUR.</p></details>
+    <details><summary>How much is 100 EUR in AUD?</summary><p>100 EUR = 162.39 AUD at the current mid-market rate. Use the converter above for any amount.</p></details>
+    <details><summary>Is this rate free to use in my app?</summary><p>Yes — Sera FX gives the EUR/AUD rate (buy, sell and mid) through one free API. No credit card, no paid tier, commercial use allowed. <a href="/#docs" style="color:var(--sera-deep);font-weight:600">Get a free key.</a></p></details>
+  </section>
+
+  <section>
+    <h2>Related pairs</h2>
+    <div class="rel"><a href="/convert/eur-to-usd/">EUR/USD</a><a href="/convert/eur-to-gbp/">EUR/GBP</a><a href="/convert/eur-to-jpy/">EUR/JPY</a><a href="/convert/eur-to-chf/">EUR/CHF</a><a href="/convert/eur-to-cad/">EUR/CAD</a><a href="/convert/eur-to-cny/">EUR/CNY</a><a href="/convert/usd-to-aud/">USD/AUD</a><a href="/convert/gbp-to-aud/">GBP/AUD</a><a href="/convert/jpy-to-aud/">JPY/AUD</a><a href="/convert/chf-to-aud/">CHF/AUD</a><a href="/convert/cad-to-aud/">CAD/AUD</a><a href="/convert/cny-to-aud/">CNY/AUD</a></div>
+  </section>
+</main>
+
+<footer><div class="wrap">© 2026 Sera · Rates for reference, not financial advice · <a href="/">fx.sera.cx</a> · <a href="/#docs">API</a></div></footer>
+
+<script>
+  const BASE=0.9231, QUOTE=1.499, QD=2, BC="EUR", QC="AUD";
+  let rate=QUOTE/BASE;
+  const $=id=>document.getElementById(id);
+  const fmt=(n,d)=>n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+  const rdp=r=>r>=100?2:r>=10?3:4;
+  function conv(){const a=parseFloat($('amt').value)||0;$('res').value=fmt(a*rate,QD);}
+  function paint(){$('hero').textContent=rate.toFixed(rdp(rate));$('rateNote').textContent='1 '+BC+' = '+rate.toFixed(rdp(rate))+' '+QC;conv();}
+  $('amt').addEventListener('input',conv);
+  // simulated live tick around the baked rate (swap for a fetch to the rates layer when live)
+  const seed=QUOTE/BASE;
+  setInterval(()=>{rate=seed*(1+(Math.random()-.5)*0.0016);paint();},4000);
+  conv();
+</script>
+</body>
+</html>

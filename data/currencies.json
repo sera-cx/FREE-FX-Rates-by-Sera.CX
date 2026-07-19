@@ -1,0 +1,12 @@
+[
+  { "code": "USD", "name": "US Dollar", "symbol": "$", "decimals": 2, "perUSD": 1, "flag": "🇺🇸" },
+  { "code": "EUR", "name": "Euro", "symbol": "€", "decimals": 2, "perUSD": 0.9231, "flag": "🇪🇺" },
+  { "code": "GBP", "name": "British Pound", "symbol": "£", "decimals": 2, "perUSD": 0.7842, "flag": "🇬🇧" },
+  { "code": "JPY", "name": "Japanese Yen", "symbol": "¥", "decimals": 0, "perUSD": 157.2, "flag": "🇯🇵" },
+  { "code": "CHF", "name": "Swiss Franc", "symbol": "Fr", "decimals": 2, "perUSD": 0.8912, "flag": "🇨🇭" },
+  { "code": "AUD", "name": "Australian Dollar", "symbol": "A$", "decimals": 2, "perUSD": 1.499, "flag": "🇦🇺" },
+  { "code": "CAD", "name": "Canadian Dollar", "symbol": "C$", "decimals": 2, "perUSD": 1.369, "flag": "🇨🇦" },
+  { "code": "CNY", "name": "Chinese Yuan", "symbol": "¥", "decimals": 2, "perUSD": 7.242, "flag": "🇨🇳" },
+  { "code": "INR", "name": "Indian Rupee", "symbol": "₹", "decimals": 2, "perUSD": 83.52, "flag": "🇮🇳" },
+  { "code": "SGD", "name": "Singapore Dollar", "symbol": "S$", "decimals": 2, "perUSD": 1.341, "flag": "🇸🇬" }
+]
