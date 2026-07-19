@@ -172,7 +172,17 @@ Privy is the front door; Sera's wallet-signed key flow sits behind it.
 
 **Enforcement point:** gate **API-key issuance and authenticated rate calls** behind a valid
 Privy session (verify the Privy token server-side before minting/serving). Do **not** gate the
-marketing page's illustrative demo widget — keep it public for conversion + SEO/GEO.
+public rate pages — keep them open for conversion + SEO/GEO.
+
+**SEO the public rates (product decision — "so Google can call it"):** the public-facing rate
+values must be **crawlable**, i.e. rendered into **server-side/static HTML at build time**, not
+injected only by client JS (Googlebot/AI crawlers won't reliably run the fetch). Concretely:
+- Bake the current rate into the HTML of each public page, refreshed by the rates layer on a
+  build/cron (SPEC §4 snapshot model), with client JS layering the live update on top.
+- The indexable rate surface is the **programmatic `/convert/{base}-to-{quote}` pages**
+  (SPEC §3): one per pair, rate in the markup, plus `FAQPage` + a rates `Dataset` JSON-LD so
+  search and LLMs can extract "1 EUR = 1.08 USD" with attribution. These pages are public and
+  ungated even though the API/dashboard behind them requires Privy.
 
 **Tradeoff to confirm with product:** a hard login gate removes the anonymous *keyless* tier,
 which is the biggest AI-citation / quick-adoption lever. Reconciliation: Privy-gate the
