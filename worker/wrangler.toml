@@ -1,0 +1,20 @@
+name = "sera-fx-rates"
+main = "src/index.js"
+compatibility_date = "2026-07-01"
+workers_dev = true
+
+# Custom domain for the rates layer, e.g. rates.sera.cx (configure the route in the dashboard,
+# or uncomment and set your zone):
+# routes = [{ pattern = "rates.sera.cx", custom_domain = true }]
+
+# --- LIVE mode needs these (set as secrets, never commit) ---
+#   wrangler secret put SERA_API_KEY
+#   wrangler secret put SERA_API_SECRET
+
+# Optional: cache snapshots in KV + refresh on a cron so we don't hit the core API per request.
+# [[kv_namespaces]]
+# binding = "RATES"
+# id = "<create with: wrangler kv namespace create RATES>"
+#
+# [triggers]
+# crons = ["*/1 * * * *"]   # refresh every minute

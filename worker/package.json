@@ -1,0 +1,14 @@
+{
+  "name": "sera-fx-rates",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Sera FX rates layer — CORS-enabled public rates API over Sera's on-chain orderbook",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}

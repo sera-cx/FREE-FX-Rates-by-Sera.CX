@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get your key — Sera FX</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.ico" sizes="16x16" type="image/x-icon">
+<link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/apple-icon-180x180.png" sizes="180x180">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+  :root{--sera:#00D26A;--sera-deep:#1B7A3F;--paper:#FFFFFF;--paper-warm:#FAF7EE;--rule:#E5E7E0;--ink:#0B1426;--ink-muted:#455067;--ink-subtle:#9DA4B3;--font-sans:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,sans-serif;--font-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;--font-emphasis:"Instrument Serif",Georgia,serif}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper-warm);color:var(--ink);font-family:var(--font-sans);line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh}
+  a{color:inherit;text-decoration:none}
+  em,i{font-family:var(--font-emphasis);font-style:italic;color:var(--sera-deep)}
+  .preview{background:#0B1426;color:#cfe;text-align:center;font-family:var(--font-mono);font-size:12.5px;padding:8px 16px;letter-spacing:.02em}
+  .preview b{color:var(--sera)}
+  nav{height:64px;display:flex;align-items:center;justify-content:space-between;max-width:960px;margin:0 auto;padding:0 24px}
+  .logo{display:flex;align-items:center;gap:11px;font-weight:700;font-size:19px;letter-spacing:-.02em}
+  .logo img{width:29px;height:29px;border-radius:8px;object-fit:cover}
+  .logo span{color:var(--sera-deep);margin-left:-5px}
+  .nav-back{font-family:var(--font-mono);font-size:13px;color:var(--ink-muted)}
+  .wrap{max-width:640px;margin:40px auto 80px;padding:0 24px}
+  .card{background:var(--paper);border:1px solid var(--rule);border-radius:20px;padding:34px;box-shadow:0 40px 80px -50px rgba(11,20,38,.35)}
+  .eyebrow{font-family:var(--font-mono);color:var(--sera-deep);font-weight:500;font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px}
+  h1{font-size:33px;line-height:1.05;letter-spacing:-.03em;font-weight:600;margin-bottom:12px}
+  .sub{color:var(--ink-muted);font-size:16px;margin-bottom:26px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-weight:600;font-size:15.5px;padding:14px 24px;border-radius:12px;cursor:pointer;border:1px solid transparent;transition:transform .18s,background .2s,box-shadow .25s;font-family:var(--font-sans)}
+  .btn-primary{background:var(--sera);color:#04120a;box-shadow:0 10px 26px -12px rgba(0,210,106,.7);width:100%}
+  .btn-primary:hover{background:var(--sera-deep);color:#fff;transform:translateY(-2px)}
+  .btn-ghost{border-color:var(--rule);background:#fff;color:var(--ink);font-size:13px;padding:9px 14px}
+  .btn-ghost:hover{border-color:var(--sera)}
+  .steps{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:12px}
+  .steps li{display:flex;gap:12px;align-items:flex-start;font-size:14px;color:var(--ink-muted)}
+  .steps .n{flex:none;width:24px;height:24px;border-radius:7px;background:rgba(0,210,106,.1);border:1px solid rgba(0,210,106,.25);color:var(--sera-deep);font-family:var(--font-mono);font-size:12px;font-weight:600;display:grid;place-items:center}
+  .conn{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:13px;color:var(--ink-muted);background:var(--paper-warm);border:1px solid var(--rule);border-radius:11px;padding:12px 15px;margin-bottom:22px}
+  .conn .dot{width:8px;height:8px;border-radius:50%;background:var(--sera);box-shadow:0 0 8px var(--sera)}
+  .keyrow{display:flex;align-items:center;gap:10px;background:#0B1426;border-radius:11px;padding:13px 15px;margin:8px 0;font-family:var(--font-mono);font-size:13px;color:#c8d0de;overflow:hidden}
+  .keyrow .lbl{color:#6b7688;flex:none}
+  .keyrow code{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--sera)}
+  .copy{flex:none;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:#cfe;font-family:var(--font-mono);font-size:11.5px;padding:6px 11px;border-radius:8px;cursor:pointer;transition:.2s}
+  .copy:hover{border-color:var(--sera)}.copy.done{color:var(--sera);border-color:var(--sera)}
+  .tabs{display:flex;gap:4px;margin:22px 0 0;border-bottom:1px solid var(--rule)}
+  .tab{font-family:var(--font-mono);font-size:12.5px;color:var(--ink-muted);padding:8px 13px;border-radius:8px 8px 0 0;cursor:pointer;border:1px solid transparent;border-bottom:none}
+  .tab.active{color:var(--sera-deep);background:var(--paper-warm);border-color:var(--rule)}
+  pre{background:#0B1426;color:#c8d0de;border-radius:0 11px 11px 11px;padding:16px;overflow-x:auto;font-family:var(--font-mono);font-size:12.5px;line-height:1.7}
+  pre .k{color:#7fd3ff}.pre .s{color:var(--sera)}
+  .hint{font-family:var(--font-mono);font-size:11.5px;color:var(--ink-subtle);margin-top:18px}
+  .hide{display:none}
+</style>
+</head>
+<body>
+<div class="preview">PREVIEW · simulated flow — wire the real Privy SDK (app <b>cmhlmwd0a00nyl20b4m7dpgci</b>) + key mint to go live. No real key is issued here.</div>
+<nav>
+  <a class="logo" href="/"><img src="/assets/sera-mark.png" alt="Sera"> Sera <span>FX</span></a>
+  <a class="nav-back" href="/">← back to site</a>
+</nav>
+
+<div class="wrap">
+  <div class="card">
+
+    <!-- STATE: signed out -->
+    <div id="s-out">
+      <div class="eyebrow">Free API key</div>
+      <h1>Connect once, <em>call forever.</em></h1>
+      <p class="sub">Sign in with Privy — email, social, or wallet. We provision a wallet if you don't have one, so getting a key is two clicks and no forms.</p>
+      <button class="btn btn-primary" id="connectBtn">Connect with Privy</button>
+      <ol class="steps">
+        <li><span class="n">1</span><div>Sign in with Privy (email / social / wallet).</div></li>
+        <li><span class="n">2</span><div>Sign once to mint a read-only key — gasless, no funds needed.</div></li>
+        <li><span class="n">3</span><div>Copy your key + a snippet. Start calling rates.</div></li>
+      </ol>
+    </div>
+
+    <!-- STATE: connected, no key yet -->
+    <div id="s-in" class="hide">
+      <div class="eyebrow">Connected</div>
+      <h1>Mint your <em>read-only</em> key.</h1>
+      <div class="conn"><span class="dot"></span> <span id="walletAddr">0x…</span> · via Privy</div>
+      <p class="sub">One signature (EIP-712, gasless) creates a read-only key. It can read rates — it can't trade or move funds.</p>
+      <button class="btn btn-primary" id="mintBtn">Generate API key</button>
+    </div>
+
+    <!-- STATE: key issued -->
+    <div id="s-key" class="hide">
+      <div class="eyebrow">Your key</div>
+      <h1>You're <em>in.</em></h1>
+      <p class="sub">Send it as <code style="font-family:var(--font-mono);font-size:13px;color:var(--sera-deep)">Authorization: Bearer key:secret</code>. Keep the secret server-side.</p>
+      <div class="keyrow"><span class="lbl">key</span><code id="apiKey">sera_pk_…</code><button class="copy" data-copy="apiKey">Copy</button></div>
+      <div class="keyrow"><span class="lbl">secret</span><code id="apiSecret">…</code><button class="copy" data-copy="apiSecret">Copy</button></div>
+      <div class="tabs">
+        <span class="tab active" data-lang="curl">curl</span>
+        <span class="tab" data-lang="js">JavaScript</span>
+        <span class="tab" data-lang="py">Python</span>
+        <span class="tab" data-lang="mcp">MCP</span>
+      </div>
+      <pre id="snippet"></pre>
+      <p class="hint">Rates base: <span id="ratesBase"></span> · keyless calls work too (lower limits). Docs: docs.sera.cx</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ---- config (wire these for production) ---- */
+const PRIVY_APP_ID = 'cmhlmwd0a00nyl20b4m7dpgci';          // TODO: real @privy-io/react-auth PrivyProvider
+const PRIVY_CLIENT_ID = 'client-WY6SV4c27aXjfYUVgVZZzZj7XQb6vUjurCKoGDQzRpbR6';
+const RATES_BASE = 'https://rates.sera.cx';                // TODO: deployed worker URL
+document.getElementById('ratesBase').textContent = RATES_BASE;
+
+const $ = id => document.getElementById(id);
+const show = id => { ['s-out','s-in','s-key'].forEach(s => $(s).classList.toggle('hide', s !== id)); };
+
+let wallet = '', KEY = '', SECRET = '';
+const rnd = n => Array.from(crypto.getRandomValues(new Uint8Array(n))).map(b => b.toString(16).padStart(2,'0')).join('');
+
+/* SIMULATED Privy connect. Replace with: const {login} = usePrivy(); await login(); wallet = user.wallet.address */
+$('connectBtn').addEventListener('click', () => {
+  wallet = '0x' + rnd(20);
+  $('walletAddr').textContent = wallet.slice(0,6) + '…' + wallet.slice(-4);
+  show('s-in');
+});
+
+/* SIMULATED key mint. Replace with: EIP-712 ManageApiKey sig -> POST https://api.sera.cx/api/v1/api-keys */
+$('mintBtn').addEventListener('click', () => {
+  KEY = 'sera_pk_' + rnd(12);
+  SECRET = rnd(20);
+  $('apiKey').textContent = KEY;
+  $('apiSecret').textContent = SECRET;
+  show('s-key');
+  renderSnippet('curl');
+});
+
+const snippets = {
+  curl: () => `curl -H "Authorization: Bearer ${KEY}:${SECRET}" \\\n  "${RATES_BASE}/quote?from=EUR&to=USD"`,
+  js: () => `const res = await fetch("${RATES_BASE}/quote?from=EUR&to=USD", {\n  headers: { Authorization: "Bearer ${KEY}:${SECRET}" }\n});\nconst { buy, mid, sell } = await res.json();`,
+  py: () => `import requests\nr = requests.get("${RATES_BASE}/quote",\n  params={"from":"EUR","to":"USD"},\n  headers={"Authorization": "Bearer ${KEY}:${SECRET}"})\nprint(r.json()["mid"])`,
+  mcp: () => `{\n  "sera-fx": {\n    "command": "node",\n    "args": ["/path/to/mcp/src/index.js"],\n    "env": {\n      "SERA_RATES_BASE": "${RATES_BASE}",\n      "SERA_API_KEY": "${KEY}",\n      "SERA_API_SECRET": "${SECRET}"\n    }\n  }\n}`,
+};
+function renderSnippet(lang){
+  $('snippet').textContent = snippets[lang]();
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.lang === lang));
+}
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => renderSnippet(t.dataset.lang)));
+
+document.querySelectorAll('.copy').forEach(b => b.addEventListener('click', () => {
+  navigator.clipboard.writeText($(b.dataset.copy).textContent).then(() => {
+    b.classList.add('done'); b.textContent = 'Copied';
+    setTimeout(() => { b.classList.remove('done'); b.textContent = 'Copy'; }, 1500);
+  });
+}));
+</script>
+</body>
+</html>

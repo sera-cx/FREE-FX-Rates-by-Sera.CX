@@ -1,0 +1,16 @@
+{
+  "name": "sera-fx-mcp",
+  "version": "0.1.0",
+  "description": "MCP server exposing Sera FX rates (get_rate, convert, settle) to AI agents",
+  "type": "module",
+  "bin": { "sera-fx-mcp": "src/index.js" },
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.23.0"
+  }
+}

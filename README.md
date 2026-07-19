@@ -9,6 +9,10 @@ on-chain FX settlement engine. API at `api.sera.cx/v1`, docs at [docs.sera.cx](h
 
 ## Structure
 - `index.html` — the single-page site (self-contained: inline CSS/JS, Google Fonts).
+- `dashboard/` — "Connect with Privy → mint key" page (preview: simulated auth; wire real Privy).
+- `worker/` — the rates layer (Cloudflare Worker): CORS-enabled `/quote` `/latest` `/convert`,
+  simulated today, adapter seam for Sera's orderbook mid (`worker/src/sera.js`).
+- `mcp/` — MCP server exposing `get_rate` / `convert` / `settle` to AI agents (calls the worker).
 - `404.html` — branded not-found page.
 - `assets/` — `sera-mark.png` (nav/footer logo), `og.png` (social share card), wordmarks.
 - `favicon.*`, `apple-icon-180x180.png` — the Sera **S** favicon set.
