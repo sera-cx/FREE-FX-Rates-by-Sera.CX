@@ -150,15 +150,47 @@ the layer is unreachable. No other frontend changes needed for phase 1.
 
 ---
 
+## 7b. Auth & onboarding — Privy-gated
+
+Requirement: **users must sign in with Privy before they can get API access / call rates.**
+Privy is the front door; Sera's wallet-signed key flow sits behind it.
+
+**Sera Privy app (from the fx-old.sera.cx bundle — public client identifiers):**
+- App ID: `cmhlmwd0a00nyl20b4m7dpgci`
+- Client ID: `client-WY6SV4c27aXjfYUVgVZZzZj7XQb6vUjurCKoGDQzRpbR6`
+- The Privy **app secret** (server-side token verification) comes from the Privy dashboard —
+  keep it a server secret, never in the frontend. Confirm whether to reuse this same app for
+  the new fx.sera.cx or spin up a dedicated one (and add fx.sera.cx to Privy's allowed origins).
+
+**Onboarding flow:**
+1. User hits the dashboard → **Privy login** (email / social / external wallet). Privy
+   provisions an **embedded wallet** for users without one — so everyone gets a signer.
+2. That wallet signs Sera's **EIP-712 `ManageApiKey` (`POST /api-keys`, action=create)** —
+   gasless, read-only key (see §2). User receives `api_key` + `api_secret`.
+3. Dashboard shows the key + a copy-paste snippet. Calls use `Authorization: Bearer key:secret`
+   against the rates layer (server-side; never ship the key to a browser — §7).
+
+**Enforcement point:** gate **API-key issuance and authenticated rate calls** behind a valid
+Privy session (verify the Privy token server-side before minting/serving). Do **not** gate the
+marketing page's illustrative demo widget — keep it public for conversion + SEO/GEO.
+
+**Tradeoff to confirm with product:** a hard login gate removes the anonymous *keyless* tier,
+which is the biggest AI-citation / quick-adoption lever. Reconciliation: Privy-gate the
+**human dashboard + key issuance**, but still allow (a) the public on-page demo and (b)
+issued keys to work headless for agents/servers. If a fully keyless public tier is wanted
+later, it can sit alongside the gated one.
+
 ## 8. Open questions to resolve with the Sera core team
 
-1. Is there (or can there be) a **read-only / scoped** API key, so the quoting key can't trade?
-2. Exact **`GET /orders` response** for reading best bid/ask — is there a depth/top-of-book
-   variant, or do we page orders and compute? What are the **rate limits**?
-3. **Canonical token per ISO currency** (e.g. EUR → EURC or EUR0?) and the official currency list
+1. Exact **`GET /orders` response** for reading best bid/ask — is there a depth/top-of-book
+   variant, or do we page orders and compute? What are the **rate limits**? (Note: API keys are
+   already **read-only** per the docs, so a quoting key can't trade — good.)
+2. **Canonical token per ISO currency** (e.g. EUR → EURC or EUR0?) and the official currency list
    behind the "160+ currencies" claim.
-4. Preferred hosting for the layer — **core-API endpoints (Option A)** or **Worker (Option B)**?
-5. Is a simple public rates endpoint on the **roadmap**? If yes soon, we may skip the Worker.
+3. Preferred hosting for the layer — **core-API endpoints (Option A)** or **Worker (Option B)**?
+4. Is a simple public rates endpoint on the **roadmap**? If yes soon, we may skip the Worker.
+5. **Privy app**: reuse the existing `cmhlmwd0a00nyl20b4m7dpgci` app for fx.sera.cx, or a new one?
+   Either way, add `https://fx.sera.cx` to the Privy allowed origins and get the app secret.
 
 ---
 
