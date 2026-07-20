@@ -1,0 +1,14 @@
+services:
+  site:
+    image: ghcr.io/sera-cx/free-fx-rates-by-sera.cx:${IMAGE_TAG:-latest}
+    pull_policy: always
+    restart: unless-stopped
+    ports:
+      - "${SITE_BIND_ADDRESS:-127.0.0.1}:${SITE_PORT:-8080}:8080"
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+      - /var/cache/nginx:size=16m,uid=101,gid=101
+      - /var/run:size=1m,uid=101,gid=101
