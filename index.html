@@ -435,7 +435,7 @@
       <a href="#docs">API</a>
       <a href="#why">Why free</a>
     </div>
-    <a class="btn btn-primary" href="#docs">Get started →</a>
+    <a class="btn btn-primary" href="#docs">Free API key →</a>
     <button class="hamb" id="hamb" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
 </nav>
@@ -446,7 +446,7 @@
   <a href="#built">Built for</a>
   <a href="#docs">API</a>
   <a href="#why">Why free</a>
-  <a class="btn btn-primary" href="#docs">Get started →</a>
+  <a class="btn btn-primary" href="#docs">Free API key →</a>
 </div>
 
 <!-- HERO -->
@@ -807,10 +807,7 @@ const cio=new IntersectionObserver(es=>es.forEach(en=>{
 }),{threshold:.5});
 document.querySelectorAll('[data-count]').forEach(el=>cio.observe(el));
 
-document.querySelectorAll('.mag').forEach(b=>{
-  b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();const x=e.clientX-r.left-r.width/2;const y=e.clientY-r.top-r.height/2;b.style.transform=`translate(${x*.22}px,${y*.35}px)`;});
-  b.addEventListener('mouseleave',()=>b.style.transform='');
-});
+/* magnetic cursor-follow effect removed — the buttons stay put now */
 
 document.querySelectorAll('.feat').forEach(f=>{
   f.addEventListener('mousemove',e=>{const r=f.getBoundingClientRect();f.style.setProperty('--mx',(e.clientX-r.left)+'px');f.style.setProperty('--my',(e.clientY-r.top)+'px');});
