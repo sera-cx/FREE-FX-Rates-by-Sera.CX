@@ -84,6 +84,21 @@ export default {
     const up = (s) => (s || '').trim().toUpperCase();
 
     try {
+      // Proxy key minting to the core API server-side (the browser can't POST there due to
+      // the core API's CORS allowlist). The client signs ManageApiKey (EIP-712) and posts the
+      // signed payload here; we forward it and return the result with CORS.
+      if (url.pathname === '/api-keys' && request.method === 'POST') {
+        const upstream = await fetch('https://api.sera.cx/api/v1/api-keys', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: await request.text(),
+        });
+        return new Response(await upstream.text(), {
+          status: upstream.status,
+          headers: { 'Content-Type': 'application/json', ...CORS },
+        });
+      }
+
       if (url.pathname === '/health') {
         return json({ status: 'healthy', mode: 'simulated', asOf: new Date().toISOString() });
       }
