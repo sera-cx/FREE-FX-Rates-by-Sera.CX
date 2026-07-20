@@ -59,7 +59,8 @@ jobs:
 
   deploy:
     needs: publish
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
+    if: github.ref == 'refs/heads/main'
     environment: production
     steps:
       - name: Configure SSH
